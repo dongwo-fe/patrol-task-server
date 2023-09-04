@@ -1,8 +1,19 @@
 import express from 'express';
+// import CookieParse from 'cookie-parser';
+import session from 'express-session';
 
 import test from './api/index';
 
 const app = express();
+
+// app.use(CookieParse());
+app.use(
+    session({
+        resave: false,
+        saveUninitialized: false,
+        secret: 'node-task-server',
+    })
+);
 
 app.use('/api_test', test);
 
