@@ -50,11 +50,29 @@ async function checkWebsite(data) {
     console.log('新建页面');
     await page.setDefaultNavigationTimeout(0);
     // await page.emulate(KnownDevices['iPhone 7']);
+
+    // 监听消息
+    page.on('console', (msg) => console.log('PAGE LOG:', msg.type(), msg.text(), msg.location()));
+    // await page.evaluate(() => console.log(`url is ${location.href}`));
+    // 监听请求返回
+    page.on('response', (res) => {
+        console.log(res.ok(), res.url());
+    });
+    page.on('domcontentloaded', () => {
+        console.log('DOM完成');
+    });
+    page.on('pageerror', (err) => {
+        console.log('页面报错', err.message);
+    });
+    page.on('load', () => {
+        console.log('页面加载完成,静态资源加载完成');
+    });
     await page.goto(data.url, {
         waitUntil: 'load',
         timeout: 0,
     });
     console.log('打开页面', data.url);
+
     await sleep(1000);
 }
 /**
