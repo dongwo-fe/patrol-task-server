@@ -1,4 +1,4 @@
-import { spawn, exec, execFile } from 'child_process';
+import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
@@ -11,21 +11,7 @@ if (!fs.existsSync(TEMP_PATH)) fs.mkdirSync(TEMP_PATH);
 export async function runNodejs() {
     console.log(ROOT_PATH);
     console.log(TEMP_PATH);
-    // exec(
-    //     `node test.js`,
-    //     {
-    //         encoding: 'utf-8',
-    //         cwd: TEMP_PATH,
-    //     },
-    //     (err, stdout, stderr) => {
-    //         if (err) {
-    //             console.error(`exec error: ${err}`);
-    //             return;
-    //         }
-    //         console.log(`stdout: ${stdout}`);
-    //         console.error(`stderr: ${stderr}`);
-    //     }
-    // );
+
     const ps = spawn('node', ['test.js'], { cwd: TEMP_PATH });
     ps.stdout.on('data', (data) => {
         console.log('info:', data.toString());
