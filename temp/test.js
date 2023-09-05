@@ -37,7 +37,11 @@ async function getTaskInfo(id) {
 async function checkWebsite(data) {
     const browser = await createBrowser();
     console.log('创建浏览器');
-    const page = await browser.newPage();
+    const pages = await browser.pages();
+    let page = pages[0];
+    if (!page) {
+        page = await browser.newPage();
+    }
     console.log('新建页面');
     await page.setDefaultNavigationTimeout(0);
     // await page.emulate(KnownDevices['iPhone 7']);
