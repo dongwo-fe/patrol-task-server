@@ -3,6 +3,11 @@ import os from 'os';
 import path from 'path';
 import minimist from 'minimist';
 
+const { NODE_ENV = '' } = process.env;
+
+// 是否生产环境
+const isProduction = NODE_ENV === 'production';
+
 // 当前系统所属平台，主要是兼容本地开发环境
 const platform = os.platform();
 const sleep = (time) => new Promise((ok) => setTimeout(ok, time));
@@ -14,8 +19,8 @@ const sleep = (time) => new Promise((ok) => setTimeout(ok, time));
 async function createBrowser(isMobile = false) {
     return puppeteer.launch({
         ignoreHTTPSErrors: true,
-        headless: false,
-        devtools: true,
+        headless: isProduction,
+        devtools: !isProduction,
         executablePath: platform === 'win32' ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' : '/usr/bin/google-chrome',
         timeout: 60000,
         // defaultViewport: {
