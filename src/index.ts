@@ -1,23 +1,24 @@
-import express from 'express';
-// import CookieParse from 'cookie-parser';
-import session from 'express-session';
+import Koa from 'koa';
+import KoaBody from 'koa-body';
+import routers from './router';
 
-import test from './api/index';
+// import './service/task';
+// import './task';
 
-const app = express();
+const app = new Koa();
 
-// app.use(CookieParse());
 app.use(
-    session({
-        resave: false,
-        saveUninitialized: false,
-        secret: 'node-task-server',
+    KoaBody({
+        multipart: true,
+        formLimit: '20mb',
     })
 );
 
-app.use('/api_test', test);
+//加载路由
+app.use(routers.routes()).use(routers.allowedMethods());
 
 const port = process.env.PORT || '8082';
+
 app.listen(port, function () {
     console.log(`服务器运行在http://127.0.0.1:${port}`);
 });

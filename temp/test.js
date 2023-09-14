@@ -17,6 +17,7 @@ const sleep = (time) => new Promise((ok) => setTimeout(ok, time));
  * @returns 浏览器对象
  */
 async function createBrowser(isMobile = false) {
+  console.log()
     return puppeteer.launch({
         ignoreHTTPSErrors: true,
         headless: isProduction,
@@ -83,7 +84,7 @@ async function Main() {
     const params = minimist(process.argv);
     console.log('脚本参数', params);
     // 不存在的id
-    if (!params.id) return;
+    // if (!params.id) return;
     //id存在，获取信息
     const data = await getTaskInfo(params.id);
     console.log('数据', data);

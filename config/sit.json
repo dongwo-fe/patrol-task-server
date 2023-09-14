@@ -1,0 +1,20 @@
+{
+    "db": {
+        "host": "rm-2zewax4p34o76e96p.mysql.rds.aliyuncs.com",
+        "port": 3306,
+        "database": "auto_config",
+        "user": "auto_config",
+        "password": "vlW0#rycxoy3eOdBNMwD",
+        "connectionLimit": 2
+    },
+    "mq": {
+        "hostname": "amqp-cn-tl32jcnk0008.mq-amqp.cn-beijing-327844-a-internal.aliyuncs.com",
+        "username": "MjphbXFwLWNuLXRsMzJqY25rMDAwODpMVEFJNEdId252SmpBdXRxWU1lemhlRFg=",
+        "password": "MTMyMkMyNzVEMDhBQUNBNDBCM0QxRUYxQkQ5RTIyRTA3RjYyQzFFMjoxNjQyOTQzNTcxMTgx",
+        "vhost": "auto_config_sit"
+    },
+    "login": {
+        "host": "https://gatewaydev.jrdaimao.com",
+        "check": "http://internet-easyhome-canary-server-sit-mfwqd1.easyhome-app-test:443/api/auth/check"
+    }
+}
