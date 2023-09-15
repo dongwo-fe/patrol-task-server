@@ -4,7 +4,7 @@ import os from 'os';
 import fs from 'fs';
 import path, { dirname } from 'path';
 import Upload from '@dm/img_oss';
-import deleteFolderRecursive from '../src/util/deleteFolder.js';
+import deleteFolderRecursive from './util/deleteFolder.js';
 
 const { default: IMGOSS } = Upload; 
 

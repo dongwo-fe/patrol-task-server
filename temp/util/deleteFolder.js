@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const deleteFolderRecursive = (folderPath) => {
+export function deleteFolderRecursive(folderPath) {
   if (fs.existsSync(folderPath)) {
     fs.readdirSync(folderPath).forEach((file) => {
       const curPath = path.join(folderPath, file);
@@ -17,5 +17,4 @@ const deleteFolderRecursive = (folderPath) => {
     console.log('Deleted folder:', folderPath);
   }
 };
-module.exports = deleteFolderRecursive;
 

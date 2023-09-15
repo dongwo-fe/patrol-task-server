@@ -13,16 +13,17 @@ export async function runNodejs(curTask) {
     console.log(ROOT_PATH);
     console.log(TEMP_PATH);
 
-    const ps = spawn('node', ['screenshotCluster.js',curTask.url,curTask.token,curTask.taskId,curTask.browser,curTask.isToken,curTask.isCookie,curTask.tokenName,curTask.cookieName,curTask.cookie,curTask.cookieDomain,], { cwd: TEMP_PATH });
+    // const ps = spawn('node', ['screenshotCluster.js',curTask.url,curTask.token,curTask.taskId,curTask.browser,curTask.isToken,curTask.isCookie,curTask.tokenName,curTask.cookieName,curTask.cookie,curTask.cookieDomain,], { cwd: TEMP_PATH });
+    const ps = spawn('node', ['screenshotCluster.js',curTask.taskId], { cwd: TEMP_PATH });
     ps.stdout.on('data', (data) => {
       try {
+        console.log('data---------:',data.toString());
         let res = JSON.parse(data.toString()) || {};
         UpdateTaskState(curTask.id, 1)
         ModifyTaskResult(curTask.name, (res.imgList).toString(), res.taskId);
       } catch (error) {
         console.log('errorinfo-------------------:', data.toString());
       }
-       
     });
     ps.stderr.on('data', (data) => {
         console.log('err-------------:', data.toString());

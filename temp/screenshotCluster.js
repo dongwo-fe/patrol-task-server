@@ -4,7 +4,8 @@ import os from 'os';
 import fs from 'fs';
 import path, { dirname } from 'path';
 import Upload from '@dm/img_oss';
-import deleteFolderRecursive from '../src/util/deleteFolder.js';
+import axios from 'axios';
+import { deleteFolderRecursive } from './util/deleteFolder.js';
 
 const { default: IMGOSS } = Upload; 
 
@@ -33,9 +34,9 @@ async function crawler(params) {
     executablePath: platform === 'win32' ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' : '/usr/bin/google-chrome',
     timeout: 60000,
     defaultViewport: {
-        width: params.browserType === 2 ? 375 : 1366,
-        height: params.browserType === 2 ? 667 : 768,
-        isMobile: params.browserType ===2 ? true : false,
+        width: params.browser === 2 ? 375 : 1366,
+        height: params.browser === 2 ? 667 : 768,
+        isMobile: params.browser === 2 ? true : false,
     }, 
     args: ['--no-sandbox', '--v1=1', '--disable-dev-shm-usage', '--no-first-run', '--disable-setuid-sandbox'],
   };
@@ -51,7 +52,7 @@ async function crawler(params) {
   
   let imgList = [];
   // 定义任务处理函数
-  await cluster.task(async ({ page, data, i }) => {
+  await cluster.task(async ({ page, data}) => {
     // await page.goto(data.url);
     // 设置localStorage的值
     if (params.isToken) {
@@ -76,18 +77,17 @@ async function crawler(params) {
       waitUntil: 'networkidle0',  // 没有网络请求时认为页面加载完成
     });
     await sleep(2000);
-    console.log('i============',i)
-    const filePath = `${TEMP_PATH}/example${i+1}.png`;
+    const filePath = `${TEMP_PATH}/example${data.cur}.png`;
     await page.screenshot({path: filePath});
     const file = fs.readFileSync(filePath);
     const res = await IMGCLIENT.client.put(`dm_patrol_task_server/${new Date().getTime()}.png`, file);
     imgList.push(res.url);
     await sleep(1000);
   });
-  const pageUrls = params.urlList?.split(',') || [];
+  const pageUrls = params.url?.split(',') || [];
   // 添加多个巡检任务
   for (let i = 0; i < pageUrls.length; i++) {
-    cluster.queue({ url: pageUrls[i], i});
+    cluster.queue({ url: pageUrls[i], cur: i});
   }
   // 等待所有任务完成
   await cluster.idle();
@@ -100,25 +100,25 @@ async function crawler(params) {
 
 // 请求接口并返回对应的任务信息
 async function getTaskInfo(id) {
-  let data = await GetTaskDetails(id)
-  return data;
+  try {
+    const res = await axios.get('http://127.0.0.1:8082/api/api_task/getDetails', {
+      params: {
+        taskId: id
+      },
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    });
+    return res.data.data;
+  } catch (error) {
+    
+  }
 }
 async function Main() {
   try{
-    const args = process.argv.slice(2); // [url,token,taskId,browser,isToken,isCookie,tokenName,cookieName,cookie,cookieDomain]
-    const params = {
-      urlList: args[0],
-      token: args[1],
-      taskId: args[2],
-      browserType: args[3],
-      isToken: args[4],
-      isCookie: args[5],
-      tokenName: args[6],
-      cookieName: args[7],
-      cookie: args[8],
-      cookieDomain: args[9]
-    }
-    console.log('data------------:',params)
+    const args = process.argv.slice(2);
+    const taskId = args[0];
+    const params = await getTaskInfo(taskId);
     //执行检查函数
     await crawler(params);
   }catch(err){

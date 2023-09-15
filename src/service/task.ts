@@ -96,10 +96,10 @@ export async function autoTask(id: number, model) {
   runNodejs(model);
 }
 
-// 任务信息
+// 根据taskId获取详情
 
 export async function GetTaskDetails(taksId) {
-  const data = await TaskResult.get(taksId);
+  const data = await TaskModel.findByTaskId(taksId);
   return data;
 }
 
@@ -108,7 +108,6 @@ export async function RunTask(id: number) {
   const model = await TaskModel.get(id);
   if (!model) return;
   if (model.checkState === 2) throw new Error('任务已经在执行中了');
-  if (model.state === 0) throw new Error('停用的任务的不能执行');
   console.log('model::------------------:',model);
   await TaskModel.update({ checkState: 2 }, id);
   runNodejs(model);

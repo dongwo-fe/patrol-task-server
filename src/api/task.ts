@@ -1,7 +1,6 @@
 import Router from '@koa/router';
-import { runNodejs } from '../service/test';
 import { BeError, BeSuccess } from '../util/response';
-import { GetTaskList, ModifyTask, DelTask, ControlTask, RunTask, GetTaskDetailsList } from '../service/task';
+import { GetTaskList, ModifyTask, DelTask, ControlTask, RunTask, GetTaskDetailsList, GetTaskDetails } from '../service/task';
 import Log from '../util/log';
 
 const router = new Router();
@@ -75,7 +74,7 @@ router.post('/runTask', async function (ctx) {
   // runNodejs();
   // res.send('test');
 });
-// 任务详情
+// 巡检详情列表
 router.get('/getTackDetails', async function (ctx) {
   const { pageindex, taskId } = ctx.query;; //任务id
   try {
@@ -89,5 +88,21 @@ router.get('/getTackDetails', async function (ctx) {
   // runNodejs();
   // res.send('test');
 });
+
+// 根据taskId获取任务信息
+router.get('/getDetails', async function (ctx) {
+  const {taskId } = ctx.query;; //任务id
+  try {
+    if (!taskId) throw new Error('不存在的任务');
+    const data = await GetTaskDetails(taskId);
+    ctx.body = BeSuccess(data);
+} catch (error) {
+    Log.debug(error.message);
+    ctx.body = BeError(error.message);
+}
+  // runNodejs();
+  // res.send('test');
+});
+
 
 export default router.routes();

@@ -168,4 +168,7 @@ export default {
     findByName(name: string) {
         return Task.findOne({ where: { name } });
     },
+    findByTaskId(taskId: string) {
+      return Task.findOne({ where: { taskId } });
+    },
 };
