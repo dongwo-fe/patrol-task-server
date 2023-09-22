@@ -1,6 +1,6 @@
 import Router from '@koa/router';
 import { BeError, BeSuccess } from '../util/response';
-import { GetTaskList, ModifyTask, DelTask, ControlTask, RunTask, GetTaskDetailsList, GetTaskDetails } from '../service/task';
+import { GetTaskList, ModifyTask, DelTask, ControlTask, RunTask, GetTaskDetailsList, GetTaskDetails, GetTaskRecordList } from '../service/task';
 import Log from '../util/log';
 
 const router = new Router();
@@ -19,10 +19,10 @@ router.get('/', async function (ctx) {
 
 //创建任务
 router.post('/modifyTask', async function (ctx) {
-  const { name, url, time, isCookie, isToken, tokenName, token, cookieName, cookie, cookieDomain} = ctx.request.body;
+  const { name, url, time, browser, variable, id } = ctx.request.body;
   try {
       // const data = await ModifyTask(ctx.user.userName, name, url, time, token);
-      const data = await ModifyTask('admin', name, url, time, isCookie, isToken, tokenName, token, cookieName, cookie, cookieDomain);
+      const data = await ModifyTask('admin', name, url, time, browser, variable, id);
       ctx.body = BeSuccess(data);
   } catch (error) {
       Log.debug(error.message);
@@ -76,32 +76,41 @@ router.post('/runTask', async function (ctx) {
 });
 // 巡检详情列表
 router.get('/getTackDetails', async function (ctx) {
-  const { pageindex, taskId } = ctx.query;; //任务id
-  try {
-    if (!taskId) throw new Error('不存在的任务');
-    const data = await GetTaskDetailsList(pageindex, taskId);
-    ctx.body = BeSuccess(data);
-} catch (error) {
-    Log.debug(error.message);
-    ctx.body = BeError(error.message);
-}
+  const { pageindex, taskId, browser } = ctx.query; //任务id
+    try {
+      if (!taskId) throw new Error('不存在的任务');
+      const data = await GetTaskDetailsList(pageindex, taskId, browser);
+      ctx.body = BeSuccess(data);
+  } catch (error) {
+      Log.debug(error.message);
+      ctx.body = BeError(error.message);
+  }
   // runNodejs();
   // res.send('test');
 });
 
 // 根据taskId获取任务信息
 router.get('/getDetails', async function (ctx) {
-  const {taskId } = ctx.query;; //任务id
+  const {taskId } = ctx.query; //任务id
+    try {
+      if (!taskId) throw new Error('不存在的任务');
+      const data = await GetTaskDetails(taskId);
+      ctx.body = BeSuccess(data);
+  } catch (error) {
+      Log.debug(error.message);
+      ctx.body = BeError(error.message);
+  }
+});
+// 巡检记录列表
+router.post('/getTackRecord', async function (ctx) {
+  const { pageindex, name, checkTime, browser=1 } = ctx.request.body;
   try {
-    if (!taskId) throw new Error('不存在的任务');
-    const data = await GetTaskDetails(taskId);
-    ctx.body = BeSuccess(data);
-} catch (error) {
-    Log.debug(error.message);
-    ctx.body = BeError(error.message);
-}
-  // runNodejs();
-  // res.send('test');
+      const data = await GetTaskRecordList(pageindex, name, checkTime, browser );
+      ctx.body = BeSuccess(data);
+  } catch (error) {
+      Log.debug(error.message);
+      ctx.body = BeError(error.message);
+  }
 });
 
 

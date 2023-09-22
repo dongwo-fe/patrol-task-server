@@ -6,6 +6,13 @@ class TaskResult extends Model {
     taskId: string;
     name: string;
     imgList: string;
+    errorInfo: string;
+    isError: boolean;
+    url: string;
+    operator: string;
+    browser: number;
+    variableArr: string;
+    type: string;
 }
 TaskResult.init(
     {
@@ -28,6 +35,41 @@ TaskResult.init(
             type: DataTypes.STRING(5000),
             defaultValue: '',
             comment: '图片列表',
+        },
+        errorInfo: {
+            type: DataTypes.STRING(5000),
+            defaultValue: '',
+            comment: '错误信息',
+        },
+        isError: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            comment: '执行结果',
+        },
+        url: {
+          type: DataTypes.STRING(1000),
+          defaultValue: '',
+          comment: '检测地址',
+        },
+        operator: {
+          type: DataTypes.STRING(255),
+          defaultValue: '',
+          comment: '操作人',
+        },
+        browser: {
+          type: DataTypes.INET,
+          defaultValue: '',
+          comment: '浏览器类型',
+        },
+        variableArr: {
+          type: DataTypes.JSON,
+          defaultValue: false,
+          comment: '使用变量',
+        },
+        type: {
+          type: DataTypes.STRING(255),
+          defaultValue: '',
+          comment: '错误类型',
         },
     },
     {
@@ -69,12 +111,39 @@ export default {
     getAll() {
         return TaskResult.findAll();
     },
-    getList(pageindex = 0, taskId?: string) {
+    getList(pageindex = 0, taskId: string, browser: number) {
         let opts: any = {};
         const pageCount = 15;
         if (taskId != undefined) {
             opts.taskId = taskId;
         }
+        if (browser) {
+          opts.browser = browser;
+        }
+        return TaskResult.findAndCountAll({
+            where: opts,
+            offset: pageindex * pageCount,
+            limit: pageCount,
+            order: [['createdAt', 'DESC']]
+        });
+    },
+    getAllList(pageindex = 0, name: string, checkTime: Array<Date>, browser: number) {
+        let opts: any = {};
+        const pageCount = 15;
+        if (name) {
+          opts.name = {
+              [Op.like]: '%' + name + '%',
+          };
+        }
+        if (browser) {
+          opts.browser = browser;
+        }
+        if (checkTime) {
+          opts.createdAt = {
+            [Op.between]: checkTime
+          }
+        }
+
         return TaskResult.findAndCountAll({
             where: opts,
             offset: pageindex * pageCount,

@@ -26,7 +26,8 @@ if (!fs.existsSync(TEMP_PATH)) fs.mkdirSync(TEMP_PATH, { recursive: true });
 const platform = os.platform();
 const sleep = (time) => new Promise((ok) => setTimeout(ok, time));
 
-async function crawler(params) {
+async function crawler(params, variable) {
+  let isError=  false;
   const launchOptions = {
     ignoreHTTPSErrors: true,
     headless: isProduction,
@@ -54,35 +55,88 @@ async function crawler(params) {
   // 定义任务处理函数
   await cluster.task(async ({ page, data}) => {
     // await page.goto(data.url);
-    // 设置localStorage的值
-    if (params.isToken) {
-      await page.goto(data.url);
-      await page.evaluate((key,value) => {
-        if(!window.localStorage.getItem(key)){
-          window.localStorage.setItem(key, value);
+    if(variable) {
+      for (const item of variable) {
+        // 设置localStorage的值
+        if (item.type ===1) {
+          await page.goto(data.url);
+          await page.evaluate((key,value) => {
+            if(!window.localStorage.getItem(key)){
+              window.localStorage.setItem(key, value);
+            }
+          },item.key, item.value);
         }
-      },params.tokenName, params.token);
-      await sleep(2000);
+        // 设置sessionStorage
+        if (item.type ===2) {
+          await page.goto(data.url);
+          await page.evaluate((key,value) => {
+            if(sessionStorage.getItem(key)){
+              sessionStorage.setItem(key, value);
+            }
+          },item.key, item.value);
+        }
+        // 设置cookie
+        if (item.type ===3) {
+          await page.setCookie({
+            name: item.key,
+            value: item.value,
+            domain: item.cookieDomain,
+          });
+        }
+        // 设置额外的请求头
+        if (item.type ===4) {
+            await page.setExtraHTTPHeaders({
+              [item['key']]: item.value,
+            });
+        }
+      };
     }
-    // 设置cookie
-    if (params.isCookie) {
-      await page.setCookie({
-        name: params.cookieName,
-        value: params.cookie,
-        domain: params.cookieDomain,
-      });
+    await sleep(2000);
+    page.on('error', async(error) => {
+      const errorImg  = await getScreenshot(page, 'error')
       await sleep(2000);
-    }
+      isError = true;
+      console.error(JSON.stringify({'status':'error','type': '页面报错','errorInfo': JSON.stringify(error), 'imgList':[errorImg]}));
+      return;
+    });
+    page.on('pageerror', async(error) => {
+      const errorImg  = await getScreenshot(page, 'error')
+      isError = true;
+      await sleep(3000);
+      console.error(JSON.stringify({'status':'error','type': '异常信息','errorInfo': error.toString(), 'imgList':[errorImg]}));
+      return;
+    });
+    let lastErrorMessage = false; // 添加标识来记录截图是否已经被执行
+    page.on('console', async(message) => {
+      // const errorImg  = await getScreenshot(page, 'error')
+      if (message.type() === 'error') {
+        
+        if (!lastErrorMessage) {
+          lastErrorMessage = message.text();
+          const errorImg = await getScreenshot(page, 'error');
+          isError = true;
+          console.error(JSON.stringify({'status':'error','type': '页面 JavaScript 错误','errorInfo': lastErrorMessage, 'imgList':[errorImg]}));
+          return;
+        }
+      }
+    });
+    
     await page.goto(data.url,{
       waitUntil: 'networkidle0',  // 没有网络请求时认为页面加载完成
     });
+    
     await sleep(2000);
-    const filePath = `${TEMP_PATH}/example${data.cur}.png`;
-    await page.screenshot({path: filePath});
-    const file = fs.readFileSync(filePath);
-    const res = await IMGCLIENT.client.put(`dm_patrol_task_server/${new Date().getTime()}.png`, file);
-    imgList.push(res.url);
-    await sleep(1000);
+    try{
+      const filePath = `${TEMP_PATH}/example${data.cur}.png`;
+      await page.screenshot({path: filePath,fullPage: true});
+      const file = fs.readFileSync(filePath);
+      const res = await IMGCLIENT.client.put(`dm_patrol_task_server/${new Date().getTime()}.png`, file);
+      imgList.push(res.url);
+      await sleep(2000);
+    }catch (error){
+      isError = true;
+      console.error('截图失败', error);
+    }
   });
   const pageUrls = params.url?.split(',') || [];
   // 添加多个巡检任务
@@ -92,7 +146,7 @@ async function crawler(params) {
   // 等待所有任务完成
   await cluster.idle();
   await cluster.close();
-  console.log(JSON.stringify({'status':'success','imgList':imgList, 'taskId': params.taskId}));
+  if(!isError) console.log(JSON.stringify({'status':'success','imgList':imgList, 'taskId': params.taskId}));
   if (fs.existsSync(TEMP_PATH)) { // 删除临时文件夹
     deleteFolderRecursive(TEMP_PATH);
   };
@@ -114,15 +168,38 @@ async function getTaskInfo(id) {
     
   }
 }
+
+// 截图并上传
+async function getScreenshot (page,cur) {
+  const filePath = `${TEMP_PATH}/example${cur}.png`;
+  await page.screenshot({path: filePath,fullPage: true});
+  const file = fs.readFileSync(filePath);
+  const res = await IMGCLIENT.client.put(`dm_patrol_task_server/${new Date().getTime()}.png`, file);
+  await sleep(1000);
+  return res.url;
+}
+// 请求接口并返回对应的任务所需要的配置信息
+async function getVariableInfo(id) {
+  try {
+    const res = await axios.post('http://127.0.0.1:8082/api/api_variable/getListById', {
+      ids: JSON.parse(id),
+    })
+    return res.data.data;
+  } catch (error) {
+  }
+}
 async function Main() {
   try{
     const args = process.argv.slice(2);
     const taskId = args[0];
     const params = await getTaskInfo(taskId);
+    let variable = null;
+    if (params.variable) {
+      variable = await getVariableInfo(params.variable)
+    }
     //执行检查函数
-    await crawler(params);
+    await crawler(params,variable);
   }catch(err){
-    console.error(err)
   }
 }
 Main();

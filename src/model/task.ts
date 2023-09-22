@@ -13,13 +13,9 @@ class Task extends Model {
     checkState: number;
     browser: number;
     failureReason: string;
-    isCookie: boolean;
-    isToken: boolean;
-    tokenName: string;
-    token: string;
-    cookieName: string;
-    cookie: string;
-    cookieDomain: string;
+    groupingId: string;
+    variableArr: string;
+    variable: string;
 }
 Task.init(
     {
@@ -48,31 +44,6 @@ Task.init(
             defaultValue: '',
             comment: 'url',
         },
-        tokenName: {
-            type: DataTypes.STRING(500),
-            defaultValue: '',
-            comment: 'token名称',
-        },
-        token: {
-            type: DataTypes.STRING(500),
-            defaultValue: '',
-            comment: 'token值',
-        },
-        cookieName: {
-            type: DataTypes.STRING(500),
-            defaultValue: '',
-            comment: 'cookie名称',
-        },
-        cookie: {
-            type: DataTypes.STRING(500),
-            defaultValue: '',
-            comment: 'cookie值',
-        },
-        cookieDomain: {
-            type: DataTypes.STRING(500),
-            defaultValue: '',
-            comment: 'cookieDomain',
-        },
         time: {
             type: DataTypes.STRING(100),
             defaultValue: '',
@@ -98,15 +69,20 @@ Task.init(
             defaultValue: 1,
             comment: '浏览器类型',
         },
-        isCookie: {
-            type: DataTypes.BOOLEAN,
+        groupingId: {
+            type: DataTypes.INTEGER,
             defaultValue: false,
-            comment: '是否需要cookie',
+            comment: '分组ID',
         },
-        isToken: {
-            type: DataTypes.BOOLEAN,
+        variableArr: {
+            type: DataTypes.JSON,
             defaultValue: false,
-            comment: '是否需要token',
+            comment: '使用变量',
+        },
+        variable: {
+            type: DataTypes.JSON,
+            defaultValue: false,
+            comment: '使用变量id',
         },
     },
     {
@@ -116,7 +92,7 @@ Task.init(
         indexes: [
             {
                 unique: true,
-                fields: ['name'],
+                fields: ['id','taskId'],
             },
         ],
     }
@@ -131,6 +107,9 @@ export default {
     },
     insert: function (model: any) {
         return Task.create(model);
+    },
+    bulkCreate: function (model: any) {
+        return Task.bulkCreate(model);
     },
     update(data, id) {
         return Task.update(data, { where: { id } });

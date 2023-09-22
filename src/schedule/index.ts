@@ -20,14 +20,21 @@ export async function runNodejs(curTask) {
         console.log('data---------:',data.toString());
         let res = JSON.parse(data.toString()) || {};
         UpdateTaskState(curTask.id, 1)
-        ModifyTaskResult(curTask.name, (res.imgList).toString(), res.taskId);
+        ModifyTaskResult(curTask.name, (res.imgList).toString(), res.taskId, false);
       } catch (error) {
         console.log('errorinfo-------------------:', data.toString());
       }
     });
     ps.stderr.on('data', (data) => {
+      try{
         console.log('err-------------:', data.toString());
+        let res = JSON.parse(data.toString()) || {};
         UpdateTaskState(curTask.id, 0, data.toString())
+        ModifyTaskResult(curTask.name, (res.imgList).toString(), curTask.taskId, true, res.errorInfo,res.type);
+      } catch (error) {
+        console.log('error-------------------:', data.toString());
+        UpdateTaskState(curTask.id, 0, data.toString())
+      }
     });
     ps.on('close', (code) => {
         if (code !== 0) {
@@ -36,20 +43,3 @@ export async function runNodejs(curTask) {
         console.log('end');
     });
 }
-
-
-
-// 创建任务管理器
-// const taskManager = new TaskManager();
-
-// 添加定时任务
-// taskManager.addTask('task1', '1 * * * *', () => {
-//   console.log('任务1执行');
-// });
-
-// taskManager.addTask('task2', '*/5 * * * *', () => {
-//   console.log('任务2执行');
-// });
-
-// 取消定时任务
-// taskManager.cancelTask('task1');

@@ -14,7 +14,6 @@ export function deleteFolderRecursive(folderPath) {
     });
 
     fs.rmdirSync(folderPath);
-    console.log('Deleted folder:', folderPath);
   }
 };
 
