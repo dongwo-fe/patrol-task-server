@@ -93,14 +93,17 @@ async function crawler(params, variable) {
     }
     await sleep(2000);
     page.on('error', async(error) => {
+      // const errorInfo = `错误消息:${JSON.stringify(error.message)},错误内容：${JSON.stringify(error.stack)}`;
       const errorImg  = await getScreenshot(page, 'error')
       await sleep(2000);
       isError = true;
       console.error(JSON.stringify({'status':'error','type': '页面报错','errorInfo': JSON.stringify(error), 'imgList':[errorImg]}));
+
       return;
     });
     page.on('pageerror', async(error) => {
       const errorImg  = await getScreenshot(page, 'error')
+      // const errorInfo = `错误消息:${JSON.stringify(error.message)},错误内容：${JSON.stringify(error.stack)}`;
       isError = true;
       await sleep(3000);
       console.error(JSON.stringify({'status':'error','type': '异常信息','errorInfo': error.toString(), 'imgList':[errorImg]}));
@@ -109,18 +112,35 @@ async function crawler(params, variable) {
     let lastErrorMessage = false; // 添加标识来记录截图是否已经被执行
     page.on('console', async(message) => {
       // const errorImg  = await getScreenshot(page, 'error')
-      if (message.type() === 'error') {
+      if (message.type() === 'error' && message.text().indexOf('options.token') === -1) {
         
         if (!lastErrorMessage) {
-          lastErrorMessage = message.text();
+          lastErrorMessage = `${message.text()};来源位置信息：${message.location().url}, ${message.location().lineNumber}`;
+          await sleep(3000);
           const errorImg = await getScreenshot(page, 'error');
           isError = true;
+          await sleep(3000)
           console.error(JSON.stringify({'status':'error','type': '页面 JavaScript 错误','errorInfo': lastErrorMessage, 'imgList':[errorImg]}));
           return;
         }
       }
     });
-    
+    // 监听页面的网络请求
+    let shouldTakeScreenshot = false; // 防止重复截图
+    page.on('response', async (response) => {
+      if (response.status() >= 400 ) {
+        // console.log('Failed to load resource:', response.url());
+        if (shouldTakeScreenshot) {
+          const errorImg  = await getScreenshot(page, 'error')
+          isError = true;
+          const errorInfo = `状态码:${response.status()},请求的 URL:${response.url()}`
+          await sleep(3000);
+          console.error(JSON.stringify({'status':'error','type': '网络请求错误','errorInfo': errorInfo, 'imgList':[errorImg]}));
+          return;
+        }
+      }
+    });
+    shouldTakeScreenshot = true;
     await page.goto(data.url,{
       waitUntil: 'networkidle0',  // 没有网络请求时认为页面加载完成
     });
