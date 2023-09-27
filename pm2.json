@@ -1,0 +1,13 @@
+{
+    "apps": [
+        {
+            "name": "patrol@18006",
+            "script": "dist/index.js",
+            "args": [],
+            "env": {
+                "PORT": "18006",
+                "NODE_ENV": "production"
+            }
+        }
+    ]
+}
