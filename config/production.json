@@ -1,0 +1,10 @@
+{
+    "db": {
+        "host": "127.0.0.1",
+        "port": 18001,
+        "database": "patchhub",
+        "user": "patchhub",
+        "password": "K8DmHcEmStytwNzK",
+        "connectionLimit": 2
+    }
+}
