@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "node ./script/build.js && nodemon",
         "build": "node ./script/build.js && tsc",
-        "test": "cross-env NODE_ENV=sit nodemon"
+        "test": "cross-env NODE_ENV=sit nodemon",
+        "sql": "ts-node src/model/install.ts"
     },
     "keywords": [],
     "author": "",

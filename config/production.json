@@ -2,8 +2,8 @@
     "db": {
         "host": "127.0.0.1",
         "port": 18001,
-        "database": "patchhub",
-        "user": "patchhub",
+        "database": "patrol",
+        "user": "patrol",
         "password": "K8DmHcEmStytwNzK",
         "connectionLimit": 2
     }
