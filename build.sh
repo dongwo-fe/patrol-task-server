@@ -1,6 +1,6 @@
 #!/bin/bash
 
 git pull
-npm run build
+export NODE_ENV=production && npm run build
 
 pm2 restart patrol@18007
