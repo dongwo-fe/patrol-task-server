@@ -70,7 +70,7 @@ Task.init(
             comment: '浏览器类型',
         },
         groupingId: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(20),
             defaultValue: '',
             comment: '分组ID',
         },
