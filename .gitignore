@@ -134,3 +134,4 @@ env.js
 .history
 
 config/default.js
+src/env.ts
