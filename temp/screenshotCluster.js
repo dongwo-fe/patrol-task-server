@@ -175,7 +175,7 @@ async function crawler(params, variable) {
 // 请求接口并返回对应的任务信息
 async function getTaskInfo(id) {
   try {
-    const res = await axios.get('http://127.0.0.1:8082/api/api_task/getDetails', {
+    const res = await axios.get(isProduction ? 'http://59.110.230.100:18006/api/api_task/getDetails' : 'http://127.0.0.1:8082/api/api_task/getDetails', {
       params: {
         taskId: id
       },
@@ -185,7 +185,7 @@ async function getTaskInfo(id) {
     });
     return res.data.data;
   } catch (error) {
-    
+    console.error('获取任务信息', error);
   }
 }
 
@@ -201,11 +201,12 @@ async function getScreenshot (page,cur) {
 // 请求接口并返回对应的任务所需要的配置信息
 async function getVariableInfo(id) {
   try {
-    const res = await axios.post('http://127.0.0.1:8082/api/api_variable/getListById', {
+    const res = await axios.post( isProduction ? 'http://59.110.230.100:18006/api/api_variable/getListById' : 'http://127.0.0.1:8082/api/api_variable/getListById', {
       ids: JSON.parse(id),
     })
     return res.data.data;
   } catch (error) {
+    console.error('获取配置信息', error);
   }
 }
 async function Main() {
