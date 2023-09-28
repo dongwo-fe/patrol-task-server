@@ -24,7 +24,7 @@ Variable.init(
         },
         type: {
             type: DataTypes.INTEGER,
-            defaultValue: '',
+            defaultValue: 0,
             comment: '变量类型',
         },
         operator: {

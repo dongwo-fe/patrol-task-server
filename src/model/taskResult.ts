@@ -57,8 +57,8 @@ TaskResult.init(
           comment: '操作人',
         },
         browser: {
-          type: DataTypes.INET,
-          defaultValue: '',
+          type: DataTypes.INTEGER,
+          defaultValue: 0,
           comment: '浏览器类型',
         },
         variableArr: {
