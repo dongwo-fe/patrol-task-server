@@ -70,8 +70,8 @@ Task.init(
             comment: '浏览器类型',
         },
         groupingId: {
-            type: DataTypes.INTEGER,
-            defaultValue: false,
+            type: DataTypes.STRING,
+            defaultValue: '',
             comment: '分组ID',
         },
         variableArr: {
@@ -92,7 +92,7 @@ Task.init(
         indexes: [
             {
                 unique: true,
-                fields: ['id','taskId'],
+                fields: ['id', 'taskId'],
             },
         ],
     }
@@ -148,6 +148,6 @@ export default {
         return Task.findOne({ where: { name } });
     },
     findByTaskId(taskId: string) {
-      return Task.findOne({ where: { taskId } });
+        return Task.findOne({ where: { taskId } });
     },
 };
