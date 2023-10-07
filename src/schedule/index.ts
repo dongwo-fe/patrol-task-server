@@ -14,7 +14,8 @@ export async function runNodejs(curTask) {
   try {
     log.info('ROOT_PATH:---', ROOT_PATH,process.env.NODE_ENV);
     log.info('TEMP_PATH:---', TEMP_PATH);
-    const ps:any = spawn(process.env._ || 'node', ['screenshotCluster.js', curTask.taskId], { cwd: TEMP_PATH, env: { NODE_ENV: process.env.NODE_ENV } });
+    const nodePath = process.env.NODE_ENV === 'production' ? '/usr/local/node16/bin/node' : 'node';
+    const ps:any = spawn(nodePath, ['screenshotCluster.js', curTask.taskId], { cwd: TEMP_PATH });
     ps.stdout.on('data', (data) => {
         try {
             log.info('data---------:', data.toString());
