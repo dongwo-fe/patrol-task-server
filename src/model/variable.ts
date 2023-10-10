@@ -37,6 +37,15 @@ Variable.init(
             defaultValue: '',
             comment: 'key',
         },
+        scripts: {
+            type: DataTypes.TEXT,
+            comment: 'scripts',
+        },
+        isScript: {
+            type: DataTypes.TINYINT,
+            defaultValue: 0,
+            comment: '是否脚本',
+        },
         value: {
             type: DataTypes.STRING(500),
             defaultValue: '',
@@ -108,12 +117,12 @@ export default {
         return Variable.findOne({ where: { name } });
     },
     findById(ids?: Array<number>) {
-      let opts: any = {};
-      opts.id = {
-        [Op.in]: ids,
-      };
-      return Variable.findAll({
-          where: opts,
-      });
-  },
+        let opts: any = {};
+        opts.id = {
+            [Op.in]: ids,
+        };
+        return Variable.findAll({
+            where: opts,
+        });
+    },
 };
