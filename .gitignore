@@ -135,3 +135,4 @@ env.js
 
 config/default.js
 src/env.ts
+downloads/
