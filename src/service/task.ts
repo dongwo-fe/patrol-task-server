@@ -129,7 +129,6 @@ export async function autoTask(id: number, model) {
 }
 
 // 根据taskId获取详情
-
 export async function GetTaskDetails(taskId) {
   const data = await TaskModel.findByTaskId(taskId);
   return data;
