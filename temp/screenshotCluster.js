@@ -37,7 +37,7 @@ async function crawler(params, variable) {
         ignoreHTTPSErrors: true,
         headless: isProduction,
         devtools: !isProduction,
-        executablePath: platform === 'win32' ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' : '/usr/bin/google-chrome',
+        // executablePath: platform === 'win32' ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' : '/usr/bin/google-chrome',
         timeout: 60000,
         defaultViewport: {
             width: params.browser === 2 ? 375 : 1366,

@@ -8,6 +8,8 @@ class Variable extends Model {
     operator: string;
     key: string;
     value: string;
+    scripts: string;
+    isScript: number;
     cookieDomain: string;
 }
 Variable.init(
