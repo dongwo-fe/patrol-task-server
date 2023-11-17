@@ -1,3 +1,5 @@
+const API_ERROR_List = new Map();
+
 /**
  * 接收api接口错误信息
  * @param from 来源地址
@@ -7,4 +9,19 @@
  */
 export async function NoticeApiError(from: string, api: string, err_msg: string, env?: string) {
     console.log(from, api, err_msg, env);
+    let list: any[] = [];
+    //合并同接口错误
+    if (API_ERROR_List.has(api)) {
+        list = API_ERROR_List.get(api);
+    }
+    list.push({ from, api, err_msg, env });
+    API_ERROR_List.set(api, list);
+}
+
+// 定时通知钉钉
+export async function NoticeDDTalk() {
+    // 查询每条错误
+    API_ERROR_List.forEach((value: any[], key: string) => {
+        console.log(key, value.length);
+    });
 }
