@@ -4,7 +4,7 @@ import { oauth2_1_0 } from '@alicloud/dingtalk';
 import {
   dwFrontKey,
   dwFrontGrouoWebhookAccessToken,
-} from "../../../src/configs/dingtalk";
+} from "../../configs/dingtalk";
 import { sendToRobot } from './apis';
 
 /**
