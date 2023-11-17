@@ -1,4 +1,4 @@
-import { dingtalkOApiFetch } from "../fetch";
+import { dingtalkOApiFetch } from "../util/dingtalkFetch";
 
 const dingtalkApi = dingtalkOApiFetch();
 

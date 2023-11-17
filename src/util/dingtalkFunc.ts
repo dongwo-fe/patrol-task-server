@@ -1,11 +1,9 @@
 import crypto from 'crypto';
-import * as $OpenApi from '@alicloud/openapi-client';
-import { oauth2_1_0 } from '@alicloud/dingtalk';
 import {
   dwFrontKey,
   dwFrontGrouoWebhookAccessToken,
-} from "../../configs/dingtalk";
-import { sendToRobot } from './apis';
+} from "../configs/dingtalk";
+import { sendToRobot } from '../api/dingtalkApis';
 
 /**
  * 通知到钉钉群

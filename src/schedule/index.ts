@@ -18,7 +18,7 @@ export async function runNodejs(curTask) {
     const nodePath = process.env.NODE_ENV === 'production' ? '/usr/local/node16/bin/node' : 'node';
     const ps:any = spawn(nodePath, ['screenshotCluster.js', curTask.taskId], { cwd: TEMP_PATH });
     log.info('ps:---', ps);
-    ps.stdout.on('data', (data) => {
+    ps.stdout.on('data', (data) => { // 子进程的输出
         try {
             log.info('data---------:', data.toString());
             let res = JSON.parse(data.toString()) || {};
@@ -28,7 +28,7 @@ export async function runNodejs(curTask) {
             log.info('errorinfo-------------------:', data.toString());
         }
     });
-    ps.stderr.on('data', (data) => {
+    ps.stderr.on('data', (data) => { // 子进程的错误
         try {
             log.info('err-------------:', data.toString());
             let res = JSON.parse(data.toString()) || {};
@@ -40,7 +40,7 @@ export async function runNodejs(curTask) {
             UpdateTaskState(curTask.id, 0, data.toString());
         }
     });
-    ps.on('close', (code) => {
+    ps.on('close', (code) => { // 子进程退出
         if (code !== 0) {
             log.info(`ps process exited with code ${code}`);
         }

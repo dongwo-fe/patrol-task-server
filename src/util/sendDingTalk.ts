@@ -1,5 +1,5 @@
 import TaskModel from '../model/task';
-import { tongzhiFEDD } from '../services/dingtalk/func';
+import { tongzhiFEDD } from '../util/dingtalkFunc';
 export default async function sendDingTalk (taskId, data) {
   const TaskData:any = await TaskModel.findByTaskId(taskId);
   const browser = TaskData?.browser || ''; // 浏览器类型;
