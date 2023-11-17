@@ -1,5 +1,5 @@
 import Router from '@koa/router';
-import { NoticeApiError } from 'src/service/notice';
+import { NoticeApiError } from '../service/notice';
 
 const router = new Router();
 
