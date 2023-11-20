@@ -43,7 +43,7 @@ export async function NoticeDDTalk() {
     APILIST.sort((a, b) => b.length - a.length);
     //取前10个
     if (APILIST.length > 5) APILIST.length = 5;
-    const list: string[] = ['![](https://ossprod.jrdaimao.com/ac/1700477625993_1088x219.png)'];
+    const list: string[] = ['![](https://ossprod.jrdaimao.com/ac/1700478580078_1088x137.jpg)'];
     // 查询每条错误
     APILIST.forEach((value) => {
         list.push(getAPIListMsg(value));
