@@ -63,3 +63,43 @@ async function postToDD(key: string, access_token: string, data: any) {
     // 洞窝前端群
     await axios.post('https://oapi.dingtalk.com/robot/send', data, { params: { access_token, timestamp, sign } });
 }
+
+// 通知群：API通知
+const APINoticeKey = 'SECed77b3a7bdfacdd438598a4b2364619fe405067446eb61f39679805194217300';
+const APINoticeToken = '2400d0b3b37be520747975b5d2dbac0c58587cf9e881cb7d4f916f149a1b25f8';
+
+// 标题
+// # 一级标题
+// ## 二级标题
+// ### 三级标题
+// #### 四级标题
+// ##### 五级标题
+// ###### 六级标题
+
+// 引用
+// > A man who stands for nothing will fall for anything.
+
+// 文字加粗、斜体
+// **bold**
+// *italic*
+
+// 链接
+// [this is a link](http://name.com)
+
+// 图片
+// ![](http://name.com/pic.jpg)
+
+// 通知群的消息通知
+export async function TZNoticeGroup(text: string) {
+    try {
+        await postToDD(APINoticeKey, APINoticeToken, {
+            msgtype: 'markdown',
+            markdown: {
+                title: 'API告警通知[TOP10]',
+                text,
+            },
+        });
+    } catch (error) {
+        console.log('失败失败', error);
+    }
+}

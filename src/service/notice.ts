@@ -1,4 +1,16 @@
-const API_ERROR_List = new Map();
+import { TZNoticeGroup } from './dingding';
+
+const API_ERROR_List = new Map<string, APIERRITEM[]>();
+
+interface APIERRITEM {
+    from: string;
+    api: string;
+    /**
+     * 错误类型，0http，1api
+     */
+    err_msg: string;
+    env?: string;
+}
 
 /**
  * 接收api接口错误信息
@@ -9,20 +21,60 @@ const API_ERROR_List = new Map();
  */
 export async function NoticeApiError(from: string, api: string, err_msg: string, env = '') {
     console.log(from, api, err_msg, env);
-    let list: any[] = [];
+    let list: APIERRITEM[] = [];
     //合并同接口错误
     if (API_ERROR_List.has(api)) {
-        list = API_ERROR_List.get(api);
+        list = API_ERROR_List.get(api) || [];
     }
     list.push({ from, api, err_msg, env });
     API_ERROR_List.set(api, list);
 }
 
-// 定时通知钉钉
+// 定时通知钉钉,通知规则，按照错误数量从高到底排序
 export async function NoticeDDTalk() {
     console.log('触发任务', API_ERROR_List.size);
+    if (API_ERROR_List.size === 0) return;
+    const APILIST = Array.from(API_ERROR_List.values());
+
+    API_ERROR_List.clear();
+
+    APILIST.sort((a, b) => b.length - a.length);
+    //取前10个
+    if (APILIST.length > 10) APILIST.length = 10;
+
+    const list: any[] = [];
     // 查询每条错误
-    API_ERROR_List.forEach((value: any[], key: string) => {
+    API_ERROR_List.forEach((value, key) => {
         console.log(key, value.length);
+        list.push(getAPIListMsg(key, value));
     });
+
+    TZNoticeGroup(list.join('\n\n'));
+}
+// 组装接口通知内容
+function getAPIListMsg(api: string, list: APIERRITEM[]) {
+    const objs = new Map<string, APIERRITEM[]>();
+
+    list.forEach((item) => {
+        const temp = objs.get(item.from) || [];
+        temp.push(item);
+        objs.set(item.from, temp);
+    });
+
+    const result = Array.from(objs.values());
+    const msgs: string[] = [`- 接口[${api}],报错${list.length}次`];
+
+    result.forEach((item) => {
+        let count = 0;
+        let https = 0;
+        let apis = 0;
+        item.forEach((obj) => {
+            count++;
+            if (obj.err_msg == '0') https++;
+            if (obj.err_msg == '1') apis++;
+        });
+        msgs.push(`页面[${item[0].from}](${count}/${https}/${apis})`);
+    });
+
+    return msgs.join('。');
 }
