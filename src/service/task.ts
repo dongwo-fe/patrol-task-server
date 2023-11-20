@@ -3,7 +3,7 @@ import TaskModel from '../model/task';
 import VariableModel from '../model/variable'; // findById
 import TaskResult from '../model/taskResult';
 import TaskManager from '../util/taskManager';
-import { runNodejs } from '../schedule/index';
+import { runNodejs } from '../schedule/taks';
 
 const random = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 6);
 //列表
