@@ -60,7 +60,6 @@ async function postToDD(key: string, access_token: string, data: any) {
     const sha = crypto.createHmac('SHA256', key);
     sha.update(`${timestamp}\n${key}`, 'utf8');
     const sign = encodeURI(sha.digest('base64'));
-    // 洞窝前端群
     await axios.post('https://oapi.dingtalk.com/robot/send', data, { params: { access_token, timestamp, sign } });
 }
 

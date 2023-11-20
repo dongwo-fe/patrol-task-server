@@ -48,7 +48,7 @@ export async function NoticeDDTalk() {
         console.log(key, value.length);
         list.push(getAPIListMsg(key, value));
     });
-
+    console.log('通知', list);
     TZNoticeGroup(list.join('\n\n'));
 }
 // 组装接口通知内容
