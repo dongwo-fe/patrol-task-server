@@ -35,7 +35,7 @@ export async function runNodejs(curTask) {
                 log.info('err-------------:', data.toString());
                 let res = JSON.parse(data.toString()) || {};
                 UpdateTaskState(curTask.id, 0, data.toString()); // 修改任务状态
-                ModifyTaskResult(curTask.name, res.imgList.toString(), curTask.taskId, true, res.errorInfo, res.type); //增加一条错误信息
+                ModifyTaskResult(curTask.name, '', curTask.taskId, true, res.errorInfo, res.type); //增加一条错误信息
                 sendDingTalk(curTask.taskId, res); // 发送钉钉通知
             } catch (error) {
                 log.info('error-------------------:', data.toString());

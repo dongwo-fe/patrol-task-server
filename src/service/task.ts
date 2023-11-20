@@ -188,6 +188,7 @@ export async function GetTaskDetailsList(pageindex, taskId, browser) {
   const data = await TaskResult.getList(pageindex, taskId, browser);
   data.rows.forEach((item:any) => {
     item.imgList = item.imgList?.split(',') || [];
+    item.errorInfo = item.errorInfo ? JSON.parse(item.errorInfo) : [];
     item.variableArr = JSON.parse(item.variableArr);
   })
   return data;
