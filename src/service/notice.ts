@@ -60,7 +60,7 @@ function getAPIListMsg(list: APIERRITEM[]) {
     });
 
     const result = Array.from(objs.values());
-    const msgs: string[] = [`- 【${api}】,${list.length}次/${APINoticeOnce}分钟`];
+    const msgs: string[] = ['![](https://ossprod.jrdaimao.com/ac/1700477625993_1088x219.png)', `- 【${api}】,${list.length}次/${APINoticeOnce}分钟`];
 
     result.sort((a, b) => b.length - a.length);
 
