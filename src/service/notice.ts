@@ -41,21 +41,23 @@ export async function NoticeDDTalk() {
     APILIST.sort((a, b) => b.length - a.length);
     //取前10个
     if (APILIST.length > 10) APILIST.length = 10;
+    console.log(APILIST);
 
     const list: any[] = [];
     // 查询每条错误
-    API_ERROR_List.forEach((value, key) => {
-        console.log(key, value.length);
-        list.push(getAPIListMsg(key, value));
+    APILIST.forEach((value) => {
+        list.push(getAPIListMsg(value));
     });
     console.log('通知', list);
     TZNoticeGroup(list.join('\n\n'));
 }
 // 组装接口通知内容
-function getAPIListMsg(api: string, list: APIERRITEM[]) {
+function getAPIListMsg(list: APIERRITEM[]) {
     const objs = new Map<string, APIERRITEM[]>();
-
+    if (list.length === 0) return '';
+    let api = '';
     list.forEach((item) => {
+        api = item.api;
         const temp = objs.get(item.from) || [];
         temp.push(item);
         objs.set(item.from, temp);
