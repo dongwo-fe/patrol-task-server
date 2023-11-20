@@ -5,6 +5,7 @@ const API_ERROR_List = new Map<string, APIERRITEM[]>();
 interface APIERRITEM {
     from: string;
     api: string;
+    url: string;
     /**
      * 错误类型，0http，1api
      */
@@ -21,14 +22,14 @@ interface APIERRITEM {
  */
 export async function NoticeApiError(from: string, api: string, err_msg: string, env = '') {
     console.log(from, api, err_msg, env);
-    from = from.split('?')[0];
+    const url = from.split('?')[0];
 
     let list: APIERRITEM[] = [];
     //合并同接口错误
     if (API_ERROR_List.has(api)) {
         list = API_ERROR_List.get(api) || [];
     }
-    list.push({ from, api, err_msg, env });
+    list.push({ url, from, api, err_msg, env });
     API_ERROR_List.set(api, list);
 }
 
@@ -56,9 +57,9 @@ function getAPIListMsg(list: APIERRITEM[]) {
     let api = '';
     list.forEach((item) => {
         api = item.api;
-        const temp = objs.get(item.from) || [];
+        const temp = objs.get(item.url) || [];
         temp.push(item);
-        objs.set(item.from, temp);
+        objs.set(item.url, temp);
     });
 
     const result = Array.from(objs.values());
@@ -76,7 +77,7 @@ function getAPIListMsg(list: APIERRITEM[]) {
             if (obj.err_msg == '0') https++;
             if (obj.err_msg == '1') apis++;
         });
-        msgs.push(`> ${index + 1}. [${item[0].from}]，数据(${count}/${https}/${apis})`);
+        msgs.push(`> ${index + 1}. [${item[0].url}]，数据(${count}/${https}/${apis})`);
     }
 
     return msgs.join('\n\n');
