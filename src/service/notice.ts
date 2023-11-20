@@ -21,6 +21,8 @@ interface APIERRITEM {
  */
 export async function NoticeApiError(from: string, api: string, err_msg: string, env = '') {
     console.log(from, api, err_msg, env);
+    from = from.split('?')[0];
+
     let list: APIERRITEM[] = [];
     //合并同接口错误
     if (API_ERROR_List.has(api)) {
