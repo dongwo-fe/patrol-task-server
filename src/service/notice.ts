@@ -32,7 +32,6 @@ export async function NoticeApiError(from: string, api: string, err_msg: string,
 
 // 定时通知钉钉,通知规则，按照错误数量从高到底排序
 export async function NoticeDDTalk() {
-    console.log('触发任务', API_ERROR_List.size);
     if (API_ERROR_List.size === 0) return;
     const APILIST = Array.from(API_ERROR_List.values());
 
@@ -41,14 +40,11 @@ export async function NoticeDDTalk() {
     APILIST.sort((a, b) => b.length - a.length);
     //取前10个
     if (APILIST.length > 10) APILIST.length = 10;
-    console.log(APILIST);
-
     const list: any[] = [];
     // 查询每条错误
     APILIST.forEach((value) => {
         list.push(getAPIListMsg(value));
     });
-    console.log('通知', list);
     TZNoticeGroup(list.join('\n\n'));
 }
 // 组装接口通知内容
@@ -75,7 +71,7 @@ function getAPIListMsg(list: APIERRITEM[]) {
             if (obj.err_msg == '0') https++;
             if (obj.err_msg == '1') apis++;
         });
-        msgs.push(`页面[${item[0].from}](${count}/${https}/${apis})`);
+        msgs.push(`页面[${item[0].from}]，数据(${count}/${https}/${apis})`);
     });
 
     return msgs.join('。');
