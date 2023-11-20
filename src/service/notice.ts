@@ -63,7 +63,7 @@ function getAPIListMsg(list: APIERRITEM[]) {
     });
 
     const result = Array.from(objs.values());
-    const msgs: string[] = [`- 【${api}】,${list.length}次/${APINoticeOnce}分钟`];
+    const msgs: string[] = [`- 【${api}】,\`${list.length}次/${APINoticeOnce}分钟\``];
 
     result.sort((a, b) => b.length - a.length);
 
@@ -77,7 +77,7 @@ function getAPIListMsg(list: APIERRITEM[]) {
             if (obj.err_msg == '0') https++;
             if (obj.err_msg == '1') apis++;
         });
-        msgs.push(`> ${index + 1}. [${item[0].url}]，数据(${count}/${https}/${apis})`);
+        msgs.push(`> ${index + 1}. [${item[0].url}]，\`数据(${count}/${https}/${apis})\``);
     }
 
     return msgs.join('\n\n');
