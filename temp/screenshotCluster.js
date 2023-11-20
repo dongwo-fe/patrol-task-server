@@ -57,6 +57,7 @@ async function crawler(params, variable) {
     const cluster = await Cluster.launch(clusterLanuchOptions);
 
     let imgList = [];
+    let errorList = [];
     // 定义任务处理函数
     await cluster.task(async ({ page, data }) => {
         // await page.goto(data.url);
@@ -110,33 +111,31 @@ async function crawler(params, variable) {
         }
         await sleep(2000);
         page.on('error', async (error) => {
-            // const errorInfo = `错误消息:${JSON.stringify(error.message)},错误内容：${JSON.stringify(error.stack)}`;
-            const errorImg = await getScreenshot(page, 'error');
-            await sleep(2000);
             isError = true;
-            console.error(JSON.stringify({ status: 'error', type: '页面报错', errorInfo: JSON.stringify(error), imgList: [errorImg] }));
-
+            // console.error(JSON.stringify({ status: 'error', type: '页面报错', errorInfo: JSON.stringify(error), imgList: [errorImg] }));
+            const obj = { status: 'error', type: '页面报错', errorInfo: JSON.stringify(error) };
+            errorList.push(obj);
             return;
         });
         page.on('pageerror', async (error) => {
-            const errorImg = await getScreenshot(page, 'error');
-            // const errorInfo = `错误消息:${JSON.stringify(error.message)},错误内容：${JSON.stringify(error.stack)}`;
             isError = true;
             await sleep(3000);
-            console.error(JSON.stringify({ status: 'error', type: '异常信息', errorInfo: error.toString(), imgList: [errorImg] }));
+            //console.error(JSON.stringify({ status: 'error', type: '异常信息', errorInfo: error.toString(), imgList: [errorImg] }));
+            const obj = { status: 'error', type: '异常信息', errorInfo: error.toString()};
+            errorList.push(obj);
             return;
         });
         let lastErrorMessage = false; // 添加标识来记录截图是否已经被执行
         page.on('console', async (message) => {
-            // const errorImg  = await getScreenshot(page, 'error')
             if (message.type() === 'error' && message.text().indexOf('options.token') === -1) {
                 if (!lastErrorMessage) {
                     lastErrorMessage = `${message.text()};来源位置信息：${message.location().url}, ${message.location().lineNumber}`;
                     await sleep(3000);
-                    const errorImg = await getScreenshot(page, 'error');
                     isError = true;
                     await sleep(3000);
-                    console.error(JSON.stringify({ status: 'error', type: '页面 JavaScript 错误', errorInfo: lastErrorMessage, imgList: [errorImg] }));
+                    // console.error(JSON.stringify({ status: 'error', type: '页面 JavaScript 错误', errorInfo: lastErrorMessage, imgList: [errorImg] }));
+                    const obj = { status: 'error', type: '页面 JavaScript 错误', errorInfo: lastErrorMessage,};
+                    errorList.push(obj);
                     return;
                 }
             }
@@ -145,22 +144,25 @@ async function crawler(params, variable) {
         let shouldTakeScreenshot = false; // 防止重复截图
         page.on('response', async (response) => {
             if (response.status() >= 400) {
-                // console.log('Failed to load resource:', response.url());
                 if (shouldTakeScreenshot) {
-                    const errorImg = await getScreenshot(page, 'error');
                     isError = true;
                     const errorInfo = `状态码:${response.status()},请求的 URL:${response.url()}`;
                     await sleep(3000);
-                    console.error(JSON.stringify({ status: 'error', type: '网络请求错误', errorInfo: errorInfo, imgList: [errorImg] }));
+                    // console.error(JSON.stringify({ status: 'error', type: '网络请求错误', errorInfo: errorInfo, imgList: [errorImg] }));
+                    const obj = { status: 'error', type: '网络请求错误', errorInfo: errorInfo,};
+                    errorList.push(obj);
                     return;
                 }
             }
         });
         shouldTakeScreenshot = true;
+        if (isError) {
+          const errorImg = await getScreenshot(page, 'error');
+          imgList.push(errorImg);
+        }
         await page.goto(data.url, {
             waitUntil: 'networkidle0', // 没有网络请求时认为页面加载完成
         });
-
         await sleep(2000);
         try {
             const filePath = `${TEMP_PATH}/example${data.cur}.png`;
@@ -182,6 +184,7 @@ async function crawler(params, variable) {
     // 等待所有任务完成
     await cluster.idle();
     await cluster.close();
+    if (errorList.length) console.error(JSON.stringify({ status: 'error', type: '报错', errorInfo: JSON.stringify(errorList), imgList }));
     if (!isError) console.log(JSON.stringify({ status: 'success', imgList: imgList, taskId: params.taskId }));
     if (fs.existsSync(TEMP_PATH)) {
         // 删除临时文件夹
