@@ -12,7 +12,8 @@ export async function sendDingTalk(taskId, data) {
         const TaskData: any = await TaskModel.findByTaskId(taskId);
         const browser = TaskData?.browser || ''; // 浏览器类型;
         const title = '巡检报警通知';
-        const message = [`巡检ID：${taskId}`, `巡检地址：${TaskData?.url}`, `错误类型：${data.type}`, `错误信息：${data.errorInfo}`];
+        const errorInfo =  JSON.parse(data.errorInfo);
+        const message = [`巡检ID：${taskId}`, `巡检地址：${TaskData?.url}`, `错误信息：${errorInfo?.length > 1 ? errorInfo[0].type+ ':'+errorInfo[0].errorInfo+ '...' : errorInfo[0].type}`];
         await tongzhiFEDD(taskId, browser, title, message);
         console.log('钉钉通知发送成功');
     } catch (error) {
