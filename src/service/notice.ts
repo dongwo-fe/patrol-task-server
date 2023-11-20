@@ -1,10 +1,11 @@
-import { TZNoticeGroup } from './dingding';
+import { APINoticeOnce, TZNoticeGroup } from './dingding';
 
 const API_ERROR_List = new Map<string, APIERRITEM[]>();
 
 interface APIERRITEM {
     from: string;
     api: string;
+    url: string;
     /**
      * 错误类型，0http，1api
      */
@@ -21,18 +22,19 @@ interface APIERRITEM {
  */
 export async function NoticeApiError(from: string, api: string, err_msg: string, env = '') {
     console.log(from, api, err_msg, env);
+    const url = from.split('?')[0];
+
     let list: APIERRITEM[] = [];
     //合并同接口错误
     if (API_ERROR_List.has(api)) {
         list = API_ERROR_List.get(api) || [];
     }
-    list.push({ from, api, err_msg, env });
+    list.push({ url, from, api, err_msg, env });
     API_ERROR_List.set(api, list);
 }
 
 // 定时通知钉钉,通知规则，按照错误数量从高到底排序
 export async function NoticeDDTalk() {
-    console.log('触发任务', API_ERROR_List.size);
     if (API_ERROR_List.size === 0) return;
     const APILIST = Array.from(API_ERROR_List.values());
 
@@ -40,31 +42,33 @@ export async function NoticeDDTalk() {
 
     APILIST.sort((a, b) => b.length - a.length);
     //取前10个
-    if (APILIST.length > 10) APILIST.length = 10;
-
-    const list: any[] = [];
+    if (APILIST.length > 5) APILIST.length = 5;
+    const list: string[] = ['![](https://ossprod.jrdaimao.com/ac/1700478580078_1088x137.jpg)'];
     // 查询每条错误
-    API_ERROR_List.forEach((value, key) => {
-        console.log(key, value.length);
-        list.push(getAPIListMsg(key, value));
+    APILIST.forEach((value) => {
+        list.push(getAPIListMsg(value));
     });
-    console.log('通知', list);
     TZNoticeGroup(list.join('\n\n'));
 }
 // 组装接口通知内容
-function getAPIListMsg(api: string, list: APIERRITEM[]) {
+function getAPIListMsg(list: APIERRITEM[]) {
     const objs = new Map<string, APIERRITEM[]>();
-
+    if (list.length === 0) return '';
+    let api = '';
     list.forEach((item) => {
-        const temp = objs.get(item.from) || [];
+        api = item.api;
+        const temp = objs.get(item.url) || [];
         temp.push(item);
-        objs.set(item.from, temp);
+        objs.set(item.url, temp);
     });
 
     const result = Array.from(objs.values());
-    const msgs: string[] = [`- 接口[${api}],报错${list.length}次`];
+    const msgs: string[] = [`- 【${api}】,${list.length}次/${APINoticeOnce}分钟`];
 
-    result.forEach((item) => {
+    result.sort((a, b) => b.length - a.length);
+
+    for (let index = 0; index < result.length; index++) {
+        const item = result[index];
         let count = 0;
         let https = 0;
         let apis = 0;
@@ -73,8 +77,8 @@ function getAPIListMsg(api: string, list: APIERRITEM[]) {
             if (obj.err_msg == '0') https++;
             if (obj.err_msg == '1') apis++;
         });
-        msgs.push(`页面[${item[0].from}](${count}/${https}/${apis})`);
-    });
+        msgs.push(`> ${index + 1}. [${item[0].url}]，数据(${count}/${https}/${apis})`);
+    }
 
-    return msgs.join('。');
+    return msgs.join('\n\n');
 }
