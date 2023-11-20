@@ -7,7 +7,7 @@ const API_ERROR_List = new Map();
  * @param err_msg 错误信息
  * @param env 环境
  */
-export async function NoticeApiError(from: string, api: string, err_msg: string, env?: string) {
+export async function NoticeApiError(from: string, api: string, err_msg: string, env = '') {
     console.log(from, api, err_msg, env);
     let list: any[] = [];
     //合并同接口错误
