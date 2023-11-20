@@ -74,7 +74,7 @@ function getAPIListMsg(list: APIERRITEM[]) {
             if (obj.err_msg == '0') https++;
             if (obj.err_msg == '1') apis++;
         });
-        msgs.push(` ${index + 1}. 页面[${item[0].from}]，数据(${count}/${https}/${apis})`);
+        msgs.push(`> ${index + 1}. [${item[0].from}]，数据(${count}/${https}/${apis})`);
     }
 
     return msgs.join('\n\n');
