@@ -1,4 +1,4 @@
-import { TZNoticeGroup } from './dingding';
+import { APINoticeOnce, TZNoticeGroup } from './dingding';
 
 const API_ERROR_List = new Map<string, APIERRITEM[]>();
 
@@ -60,7 +60,7 @@ function getAPIListMsg(list: APIERRITEM[]) {
     });
 
     const result = Array.from(objs.values());
-    const msgs: string[] = [`- 接口[${api}],报错${list.length}次`];
+    const msgs: string[] = [`### 接口[${api}],${list.length}次/${APINoticeOnce}分钟`];
 
     result.forEach((item) => {
         let count = 0;
@@ -71,8 +71,8 @@ function getAPIListMsg(list: APIERRITEM[]) {
             if (obj.err_msg == '0') https++;
             if (obj.err_msg == '1') apis++;
         });
-        msgs.push(`页面[${item[0].from}]，数据(${count}/${https}/${apis})`);
+        msgs.push(`- 页面[${item[0].from}]，数据(${count}/${https}/${apis})`);
     });
 
-    return msgs.join('。');
+    return msgs.join('\n\n');
 }
