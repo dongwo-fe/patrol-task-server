@@ -39,8 +39,8 @@ export async function NoticeDDTalk() {
 
     APILIST.sort((a, b) => b.length - a.length);
     //取前10个
-    if (APILIST.length > 10) APILIST.length = 10;
-    const list: any[] = [];
+    if (APILIST.length > 5) APILIST.length = 5;
+    const list: string[] = ['![](https://ossprod.jrdaimao.com/ac/1700477625993_1088x219.png)'];
     // 查询每条错误
     APILIST.forEach((value) => {
         list.push(getAPIListMsg(value));
@@ -60,7 +60,7 @@ function getAPIListMsg(list: APIERRITEM[]) {
     });
 
     const result = Array.from(objs.values());
-    const msgs: string[] = ['![](https://ossprod.jrdaimao.com/ac/1700477625993_1088x219.png)', `- 【${api}】,${list.length}次/${APINoticeOnce}分钟`];
+    const msgs: string[] = [`- 【${api}】,${list.length}次/${APINoticeOnce}分钟`];
 
     result.sort((a, b) => b.length - a.length);
 

@@ -76,7 +76,7 @@ export async function TZNoticeGroup(text: string) {
         await postToDD(APINoticeKey, APINoticeToken, {
             msgtype: 'markdown',
             markdown: {
-                title: 'API告警通知[TOP10]',
+                title: 'API告警通知[TOP5]',
                 text,
             },
         });
