@@ -199,6 +199,7 @@ export async function GetTaskRecordList(pageindex, name, checkTime, browser) {
   const data = await TaskResult.getAllList(pageindex, name, checkTime, browser);
   data.rows.forEach((item:any) => {
     item.imgList = item.imgList?.split(',') || [];
+    item.errorInfo = item.errorInfo ? JSON.parse(item.errorInfo) : [];
     item.variableArr = JSON.parse(item.variableArr);
   })
   return data;
