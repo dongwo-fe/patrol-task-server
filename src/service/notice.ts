@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { APINoticeOnce, TZNoticeGroup } from './dingding';
+import { marked } from 'marked';
 
 // 错误信息缓存
 const API_ERROR_List = new Map<string, APIERRITEM[]>();
@@ -21,11 +22,11 @@ interface APIERRITEM {
 
 // 组合错误信息变成一个列表
 export function getAPIErrorListMsg() {
-    const texts: string[] = [];
+    const texts: string[] = ['|序号|时间|接口|来源页面|消息|类型|', '|--|--|--|--|--|--|'];
     API_ERROR_Cache.forEach((item, index) => {
-        texts.push(`${index}. ${item.t}|${item.env}丨接口[${item.api}]，页面[${item.from}]，消息:${item.r}。类型${item.err_type}。`);
+        texts.push(`|${index}|${item.t}[${item.env}]|[${item.api}]|[${item.from}]|${item.r}|${item.err_type}|`);
     });
-    return texts.join('\n\n');
+    return marked.parse(texts.join('\n\n'));
 }
 
 /**
