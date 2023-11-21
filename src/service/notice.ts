@@ -18,9 +18,10 @@ interface APIERRITEM {
  * @param from 来源地址
  * @param api api接口地址
  * @param err_msg 错误信息
+ * @param r 自定义错误内容
  * @param env 环境
  */
-export async function NoticeApiError(from: string, api: string, err_msg: string, env = '') {
+export async function NoticeApiError(from: string, api: string, err_msg: string, r: string, env = '') {
     console.log(from, api, err_msg, env);
     const url = from.split('?')[0];
 
