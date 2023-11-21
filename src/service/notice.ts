@@ -21,7 +21,7 @@ interface APIERRITEM {
 export function getAPIErrorListMsg() {
     const texts: string[] = [];
     API_ERROR_Cache.forEach((item, index) => {
-        texts.push(`${index}. 接口[${item.api}]，页面[${item.from}]，${item.r}。类型${item.err_type}`);
+        texts.push(`${index}. 接口[${item.api}]，页面[${item.from}]，消息:${item.r}。类型${item.err_type}`);
     });
     return texts.join('\n\n');
 }
