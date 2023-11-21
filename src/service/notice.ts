@@ -64,6 +64,7 @@ export async function NoticeDDTalk() {
     APILIST.forEach((value) => {
         list.push(getAPIListMsg(value));
     });
+    list.push('[查看最近的错误信息](https://femonitor.jrdaimao.com/api/notice/api_error_list)');
     TZNoticeGroup(list.join('\n\n'));
 }
 // 组装接口通知内容
