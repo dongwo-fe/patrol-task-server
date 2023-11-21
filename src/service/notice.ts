@@ -23,7 +23,7 @@ interface APIERRITEM {
 export function getAPIErrorListMsg() {
     const texts: string[] = [];
     API_ERROR_Cache.forEach((item, index) => {
-        texts.push(`${index}. 接口[${item.api}]，页面[${item.from}]，消息:${item.r}。类型${item.err_type}。${item.t}`);
+        texts.push(`${index}. ${item.t}|${item.env},接口[${item.api}]，页面[${item.from}]，消息:${item.r}。类型${item.err_type}。`);
     });
     return texts.join('\n\n');
 }
@@ -36,7 +36,7 @@ export function getAPIErrorListMsg() {
  * @param r 自定义错误内容
  * @param env 环境
  */
-export async function NoticeApiError(from: string, api: string, err_type: string, r = '', env = '') {
+export async function NoticeApiError(from: string, api: string, err_type: string, r = '', env = '--') {
     console.log(from, api, err_type, env);
     api = api.replace('.jrdaimao.com', '***');
     from = from.replace('.jrdaimao.com', '***');
