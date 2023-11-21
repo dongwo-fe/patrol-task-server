@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>错误信息</title>
+        <style>
+            *,
+            html {
+                margin: 0;
+            }
+            .list {
+                padding: 0;
+            }
+            .item {
+                display: flex;
+                font-size: 12px;
+                border-bottom: solid 1px #ccc;
+                transition: background 0.2s ease-in;
+            }
+            .item:hover {
+                background: #efefef;
+            }
+            .item > div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-right: solid 1px #ccc;
+                padding: 10px;
+            }
+            .id {
+                width: 35px;
+                text-align: center;
+            }
+            .time {
+                width: 150px;
+                text-align: center;
+            }
+            .api,
+            .from {
+                word-break: break-all;
+                min-width: 300px;
+                flex: 1;
+            }
+            .r {
+                width: 400px;
+                word-break: break-all;
+            }
+            .type {
+                width: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="list">
+            <div class="item">
+                <div class="id">序号</div>
+                <div class="time">时间</div>
+                <div class="api">接口</div>
+                <div class="from">来源</div>
+                <div class="r">信息</div>
+                <div class="type">type</div>
+            </div>
+            {{each texts}}
+            <div class="item">
+                <div class="id">{{$index}}</div>
+                <div class="time">{{$value.t}}[{{$value.env}}]</div>
+                <div class="api">{{$value.api}}</div>
+                <div class="from">{{$value.from}}</div>
+                <div class="r">{{$value.r}}</div>
+                <div class="type">{{$value.err_type}}</div>
+            </div>
+            {{/each}}
+        </div>
+    </body>
+</html>

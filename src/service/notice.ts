@@ -1,11 +1,16 @@
 import dayjs from 'dayjs';
 import { APINoticeOnce, TZNoticeGroup } from './dingding';
-import { marked } from 'marked';
+import fs from 'fs';
+import path from 'path';
+import artTemplate from 'art-template';
 
 // 错误信息缓存
 const API_ERROR_List = new Map<string, APIERRITEM[]>();
 // 错误信息长列表缓存
 const API_ERROR_Cache: APIERRITEM[] = [];
+const RootPath = process.cwd();
+const TempNginxPath = path.join(RootPath, `./template/api_error.html`);
+const TempStr = fs.readFileSync(TempNginxPath, { encoding: 'utf-8' });
 
 interface APIERRITEM {
     from: string;
@@ -23,11 +28,11 @@ interface APIERRITEM {
 // 组合错误信息变成一个列表
 export function getAPIErrorListMsg() {
     if (API_ERROR_Cache.length === 0) return '';
-    const texts: string[] = ['|序号|时间|接口|来源页面|消息|类型|', '|--|--|--|--|--|--|'];
+    const texts: string[] = ['|序号|时间|接口|来源页面|消息|类型|', '|--|----|--|--|--|--|'];
     API_ERROR_Cache.forEach((item, index) => {
         texts.push(`|${index}|${item.t}[${item.env}]|[${item.api}]|[${item.from}]|${item.r}|${item.err_type}|`);
     });
-    return marked.parse(texts.join('\n'));
+    return artTemplate.render(TempStr, { texts: API_ERROR_Cache });
 }
 
 /**
