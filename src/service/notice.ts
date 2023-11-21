@@ -22,6 +22,7 @@ interface APIERRITEM {
 
 // 组合错误信息变成一个列表
 export function getAPIErrorListMsg() {
+    if (API_ERROR_Cache.length === 0) return '';
     const texts: string[] = ['|序号|时间|接口|来源页面|消息|类型|', '|--|--|--|--|--|--|'];
     API_ERROR_Cache.forEach((item, index) => {
         texts.push(`|${index}|${item.t}[${item.env}]|[${item.api}]|[${item.from}]|${item.r}|${item.err_type}|`);
