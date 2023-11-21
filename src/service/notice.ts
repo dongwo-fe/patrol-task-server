@@ -27,7 +27,7 @@ export function getAPIErrorListMsg() {
     API_ERROR_Cache.forEach((item, index) => {
         texts.push(`|${index}|${item.t}[${item.env}]|[${item.api}]|[${item.from}]|${item.r}|${item.err_type}|`);
     });
-    return marked.parse(texts.join('\n\n'));
+    return marked.parse(texts.join('\n'));
 }
 
 /**
