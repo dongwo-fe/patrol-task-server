@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { APINoticeOnce, TZNoticeGroup } from './dingding';
 
 // 错误信息缓存
@@ -15,13 +16,14 @@ interface APIERRITEM {
     err_type: string;
     r?: string;
     env?: string;
+    t: string;
 }
 
 // 组合错误信息变成一个列表
 export function getAPIErrorListMsg() {
     const texts: string[] = [];
     API_ERROR_Cache.forEach((item, index) => {
-        texts.push(`${index}. 接口[${item.api}]，页面[${item.from}]，消息:${item.r}。类型${item.err_type}`);
+        texts.push(`${index}. 接口[${item.api}]，页面[${item.from}]，消息:${item.r}。类型${item.err_type}。${item.t}`);
     });
     return texts.join('\n\n');
 }
@@ -44,9 +46,10 @@ export async function NoticeApiError(from: string, api: string, err_type: string
     if (API_ERROR_List.has(api)) {
         list = API_ERROR_List.get(api) || [];
     }
-    list.push({ url, from, api, err_type, env, r });
+    const t = dayjs().format('YYYY-MM-DD HH:mm:ss');
+    list.push({ url, from, api, err_type, env, r, t });
     API_ERROR_List.set(api, list);
-    API_ERROR_Cache.unshift({ url, from, api, err_type, env, r });
+    API_ERROR_Cache.unshift({ url, from, api, err_type, env, r, t });
     if (API_ERROR_Cache.length > 10000) API_ERROR_Cache.length = 10000;
 }
 
