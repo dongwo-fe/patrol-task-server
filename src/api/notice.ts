@@ -14,6 +14,7 @@ router.get('/api_error', async function (ctx) {
     if (!k || !from) {
         return;
     }
+    console.log(ctx.headers);
     // console.log('接受错误，来源页面', from, '来源接口', k, '错误内容', e);
     NoticeApiError(from, k, e, r, env);
 });
