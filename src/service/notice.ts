@@ -37,6 +37,7 @@ export function getAPIErrorListMsg() {
 export async function NoticeApiError(from: string, api: string, err_type: string, r = '', env = '') {
     console.log(from, api, err_type, env);
     const url = from.split('?')[0];
+    from = from.replace('.jrdaimao.com', '***');
 
     let list: APIERRITEM[] = [];
     //合并同接口错误
