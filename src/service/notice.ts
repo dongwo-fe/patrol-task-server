@@ -40,7 +40,7 @@ export function getAPIErrorListMsg() {
  * @param env 环境
  */
 export async function NoticeApiError(from: string, api: string, err_type: string, r = '', env = '--') {
-    console.log(from, api, err_type, env);
+    // console.log(from, api, err_type, env);
     const url = from.split('?')[0];
 
     let list: APIERRITEM[] = [];
