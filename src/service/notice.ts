@@ -41,7 +41,6 @@ export function getAPIErrorListMsg() {
  */
 export async function NoticeApiError(from: string, api: string, err_type: string, r = '', env = '--') {
     console.log(from, api, err_type, env);
-    api = api.replace('.jrdaimao.com', '***');
     const url = from.split('?')[0];
 
     let list: APIERRITEM[] = [];
