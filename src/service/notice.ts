@@ -54,6 +54,8 @@ function isFilterAPIError(api: string, r: string) {
     if (api.includes('/merchant/queryMerchantSelectedOptimize')) return true;
     // 获取联单明细
     if (api.includes('/operation/order/getOrderLinkedMarketingDetails')) return true;
+    // 小b端导购工作台运营位查询 app版本：0国内版，1国际版
+    if (api.includes('/operation/smallBShoppingGuideOperationalList')) return true;
     return false;
 }
 

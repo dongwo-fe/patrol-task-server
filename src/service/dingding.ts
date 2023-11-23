@@ -69,7 +69,7 @@ const APINoticeKey = 'SECed77b3a7bdfacdd438598a4b2364619fe405067446eb61f39679805
 const APINoticeToken = '2400d0b3b37be520747975b5d2dbac0c58587cf9e881cb7d4f916f149a1b25f8';
 
 // API通知频次
-export const APINoticeOnce = 1;
+export const APINoticeOnce = 2;
 
 // 通知群的消息通知
 export async function TZNoticeGroup(text: string) {
