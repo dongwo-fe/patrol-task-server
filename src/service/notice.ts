@@ -52,6 +52,8 @@ function isFilterAPIError(api: string, r: string) {
     if (api.includes('/goods/category/listCategoryTreeByBrandId')) return true;
     // 商户下拉【一个接口写了很多次】
     if (api.includes('/merchant/queryMerchantSelectedOptimize')) return true;
+    // 获取联单明细
+    if (api.includes('/operation/order/getOrderLinkedMarketingDetails')) return true;
     return false;
 }
 
