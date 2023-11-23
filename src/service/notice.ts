@@ -39,6 +39,7 @@ function isFilterAPIError(api: string, r: string) {
     if (api.includes('/bMessageCenter/queryCopyGoodsNotice') && r.includes(`data":[],`)) return true;
     if (api.includes('/saas/index/queryUserMarketScope') && r.includes(`data":[],`)) return true;
     if (api.includes('/api_config/vacation')) return true;
+    if (api.includes('/easyhome-b-web-application/merchant/account')) return true;
     return false;
 }
 
