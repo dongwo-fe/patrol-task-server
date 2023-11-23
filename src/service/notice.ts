@@ -31,6 +31,13 @@ export function getAPIErrorListMsg() {
     return artTemplate.render(TempStr, { texts: API_ERROR_Cache });
 }
 
+// 定向排除部分错误
+function isFilterAPIError(api: string, r: string) {
+    if (r.length > 10 && r.includes(`"data":null,`)) return true;
+    if (api.includes('/member/bulletinBoard') && r.includes(`data":[],`)) return true;
+    return false;
+}
+
 /**
  * 接收api接口错误信息
  * @param from 来源地址
@@ -40,6 +47,7 @@ export function getAPIErrorListMsg() {
  * @param env 环境
  */
 export async function NoticeApiError(from: string, api: string, err_type: string, r = '', env = '--') {
+    if (isFilterAPIError(api, r)) return;
     // console.log(from, api, err_type, env);
     const url = from.split('?')[0];
 
