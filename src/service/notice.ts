@@ -50,6 +50,8 @@ function isFilterAPIError(api: string, r: string) {
     if (api.includes('/saasUser/querySysUserHasMarketManager')) return true;
     // 商户管理--- 经营类目下拉框【一个接口写了2次】
     if (api.includes('/goods/category/listCategoryTreeByBrandId')) return true;
+    // 商户下拉【一个接口写了很多次】
+    if (api.includes('/merchant/queryMerchantSelectedOptimize')) return true;
     return false;
 }
 
