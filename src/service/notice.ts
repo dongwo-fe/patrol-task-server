@@ -34,6 +34,7 @@ export function getAPIErrorListMsg() {
 // 定向排除部分错误
 function isFilterAPIError(api: string, r: string) {
     if (r.length > 10 && r.includes(`"data":null,`)) return true;
+    if (r.length > 10 && r.includes(`message":"操作成功"`)) return true;
     // 公告栏
     if (api.includes('/member/bulletinBoard') && r.includes(`data":[],`)) return true;
     // 增量协议列表
