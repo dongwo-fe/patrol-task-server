@@ -34,12 +34,22 @@ export function getAPIErrorListMsg() {
 // 定向排除部分错误
 function isFilterAPIError(api: string, r: string) {
     if (r.length > 10 && r.includes(`"data":null,`)) return true;
+    // 公告栏
     if (api.includes('/member/bulletinBoard') && r.includes(`data":[],`)) return true;
-    if (api.includes('/saas/incrCompact/list') && r.includes(`data":[],`)) return true;
-    if (api.includes('/bMessageCenter/queryCopyGoodsNotice') && r.includes(`data":[],`)) return true;
-    if (api.includes('/saas/index/queryUserMarketScope') && r.includes(`data":[],`)) return true;
+    // 增量协议列表
+    if (api.includes('/saas/incrCompact/list')) return true;
+    // 查询消息数量
+    if (api.includes('/bMessageCenter/queryCopyGoodsNotice')) return true;
+    // 查询用户卖场列表
+    if (api.includes('/saas/index/queryUserMarketScope')) return true;
+    // 无用的config
     if (api.includes('/api_config/vacation')) return true;
+    // 鉴权使用，排除
     if (api.includes('/easyhome-b-web-application/merchant/account')) return true;
+    // 所有可抄送人
+    if (api.includes('/saasUser/querySysUserHasMarketManager')) return true;
+    // 商户管理--- 经营类目下拉框【一个接口写了2次】
+    if (api.includes('/goods/category/listCategoryTreeByBrandId')) return true;
     return false;
 }
 
@@ -81,6 +91,8 @@ export async function NoticeDDTalk() {
     const list: string[] = ['![](https://ossprod.jrdaimao.com/ac/1700478580078_1088x137.jpg)'];
     // 查询每条错误
     APILIST.forEach((value) => {
+        // 如果是1条，不提示
+        // if (value.length == 1) return;
         list.push(getAPIListMsg(value));
     });
     list.push('[查看最近的错误信息](https://femonitor.jrdaimao.com/api/notice/api_error_list)');
