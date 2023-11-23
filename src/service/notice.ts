@@ -35,6 +35,7 @@ export function getAPIErrorListMsg() {
 function isFilterAPIError(api: string, r: string) {
     if (r.length > 10 && r.includes(`"data":null,`)) return true;
     if (api.includes('/member/bulletinBoard') && r.includes(`data":[],`)) return true;
+    if (api.includes('/api_config/vacation')) return true;
     return false;
 }
 
