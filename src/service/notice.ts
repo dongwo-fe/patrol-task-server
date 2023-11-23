@@ -36,6 +36,8 @@ function isFilterAPIError(api: string, r: string) {
     if (r.length > 10 && r.includes(`"data":null,`)) return true;
     if (api.includes('/member/bulletinBoard') && r.includes(`data":[],`)) return true;
     if (api.includes('/saas/incrCompact/list') && r.includes(`data":[],`)) return true;
+    if (api.includes('/bMessageCenter/queryCopyGoodsNotice') && r.includes(`data":[],`)) return true;
+    if (api.includes('/saas/index/queryUserMarketScope') && r.includes(`data":[],`)) return true;
     if (api.includes('/api_config/vacation')) return true;
     return false;
 }
