@@ -98,7 +98,7 @@ export async function NoticeDDTalk() {
     // 查询每条错误
     APILIST.forEach((value) => {
         // 如果是1条，不提示
-        // if (value.length == 1) return;
+        if (value.length == 1) return;
         list.push(getAPIListMsg(value));
     });
     list.push('[查看最近的错误信息](https://femonitor.jrdaimao.com/api/notice/api_error_list)');
