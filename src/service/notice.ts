@@ -102,6 +102,7 @@ export async function NoticeDDTalk() {
         list.push(getAPIListMsg(value));
     });
     list.push('[查看最近的错误信息](https://femonitor.jrdaimao.com/api/notice/api_error_list)');
+    if (list.length === 2) return;
     TZNoticeGroup(list.join('\n\n'));
 }
 // 组装接口通知内容
