@@ -23,6 +23,7 @@ interface APIERRITEM {
     r?: string;
     env?: string;
     t: string;
+    ip: string;
 }
 
 // 组合错误信息变成一个列表
@@ -69,7 +70,7 @@ function isFilterAPIError(api: string, r = '') {
  * @param r 自定义错误内容
  * @param env 环境
  */
-export async function NoticeApiError(from: string, api: string, err_type: string, r = '', env = '--') {
+export async function NoticeApiError(from: string, api: string, err_type: string, r = '', ip = '', env = '--') {
     if (isFilterAPIError(api, r)) return;
     // console.log(from, api, err_type, env);
     const url = from.split('?')[0];
@@ -80,9 +81,9 @@ export async function NoticeApiError(from: string, api: string, err_type: string
         list = API_ERROR_List.get(api) || [];
     }
     const t = dayjs().format('YYYY-MM-DD HH:mm:ss');
-    list.push({ url, from, api, err_type, env, r, t });
+    list.push({ url, from, api, err_type, env, r, t, ip });
     API_ERROR_List.set(api, list);
-    API_ERROR_Cache.unshift({ url, from, api, err_type, env, r, t });
+    API_ERROR_Cache.unshift({ url, from, api, err_type, env, r, t, ip });
     if (API_ERROR_Cache.length > 10000) API_ERROR_Cache.length = 10000;
 }
 

@@ -9,6 +9,7 @@ const dataBuffer = Buffer.from('R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=
 router.get('/api_error', async function (ctx) {
     const { k, e, f, r, env } = ctx.query;
     const from = f || ctx.headers['referer'];
+    const ip = ctx.headers['x-real-ip'] || '';
     ctx.set('content-type', 'image/gif');
     ctx.body = dataBuffer;
     if (!k || !from) {
@@ -17,7 +18,7 @@ router.get('/api_error', async function (ctx) {
     // console.log(ctx.headers);
     console.log('API错误，来源', from, '来源接口', k, '错误内容', e);
     if (env === 'production' || !env) {
-        NoticeApiError(from, k, e, r, env);
+        NoticeApiError(from, k, e, r, ip, env);
     }
 });
 
