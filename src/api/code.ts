@@ -5,12 +5,12 @@ import { getCodeAll, getCodeList, editCode } from '../service/code';
 const router = new Router();
 
 router.get('/', async function (ctx) {
-    const { pageindex, name, status } = ctx.query;
+    const { pageindex, code, status } = ctx.query;
     try {
-        const data = await getCodeList(pageindex, name, status);
+        const data = await getCodeList(pageindex, code, status);
         ctx.body = BeSuccess(data);
     } catch (error) {
-        ctx.body = BeError(error);
+        ctx.body = BeError(error.message);
     }
 });
 
@@ -26,7 +26,7 @@ router.post('/edit', async function (ctx) {
         const data = await editCode(opts, id);
         ctx.body = BeSuccess(data);
     } catch (error) {
-        ctx.body = BeError(error);
+        ctx.body = BeError(error.message);
     }
 });
 
@@ -35,7 +35,7 @@ router.get('/all', async function (ctx) {
         const data = await getCodeAll();
         ctx.body = BeSuccess(data);
     } catch (error) {
-        ctx.body = BeError(error);
+        ctx.body = BeError(error.message);
     }
 });
 

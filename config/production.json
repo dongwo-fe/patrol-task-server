@@ -6,5 +6,8 @@
         "user": "patrol",
         "password": "K8DmHcEmStytwNzK",
         "connectionLimit": 2
+    },
+    "login": {
+        "check": "https://canary.jrdaimao.com/api/auth/check"
     }
 }

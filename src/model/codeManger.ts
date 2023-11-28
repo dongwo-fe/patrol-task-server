@@ -76,10 +76,10 @@ export default {
     update(data, id) {
         return CodeManger.update(data, { where: { id } });
     },
-    get: function (id: number) {
+    get: function (code: string) {
         return CodeManger.findOne({
             where: {
-                id,
+                code,
             },
         });
     },
@@ -89,12 +89,12 @@ export default {
     getAll() {
         return CodeManger.findAll({ where: { status: 1 }, attributes: ['code', 'name', 'remark', 'state'] });
     },
-    getList(pageindex = 0, name?: string, status?: number) {
+    getList(pageindex = 0, code?: string, status?: number) {
         let opts: any = {};
         const pageCount = 15;
-        if (name) {
-            opts.name = {
-                [Op.like]: '%' + name + '%',
+        if (code) {
+            opts.code = {
+                [Op.like]: '%' + code + '%',
             };
         }
         if (status != undefined) {
@@ -104,6 +104,7 @@ export default {
             where: opts,
             offset: pageindex * pageCount,
             limit: pageCount,
+            order: [['id', 'desc']],
         });
     },
 };

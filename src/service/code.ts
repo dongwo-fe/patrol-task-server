@@ -16,12 +16,12 @@ export async function getCodeAll() {
  * @param status 状态
  * @returns
  */
-export async function getCodeList(pageindex?: string, name?: string, status?: string) {
+export async function getCodeList(pageindex?: string, code?: string, status?: string) {
     let index: number | undefined = undefined;
     if (pageindex) index = Number(pageindex);
     let status2: number | undefined = undefined;
     if (status) status2 = Number(status);
-    const data = await CodeManger.getList(index, name, status2);
+    const data = await CodeManger.getList(index, code, status2);
     return data;
 }
 /**
@@ -32,8 +32,11 @@ export async function getCodeList(pageindex?: string, name?: string, status?: st
  */
 export async function editCode(data, id?: number) {
     if (id) {
-        return CodeManger.update(data, { where: { id } });
+        return CodeManger.update(data, id);
     } else {
+        // 判断code是否存在
+        const isat = await CodeManger.get(data.code);
+        if (isat) throw new Error('code已存在');
         return CodeManger.insert(data);
     }
 }
