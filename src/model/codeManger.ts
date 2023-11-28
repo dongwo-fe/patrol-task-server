@@ -64,7 +64,7 @@ CodeManger.init(
 );
 
 //强制初始化数据库
-CodeManger.sync({ force: true });
+// CodeManger.sync({ force: true });
 
 export default {
     sync(force = false) {

@@ -1,6 +1,6 @@
 import Router from '@koa/router';
 import { BeError, BeSuccess } from '../util/response';
-import { getCodeAll } from 'src/service/code';
+import { getCodeAll } from '../service/code';
 
 const router = new Router();
 
