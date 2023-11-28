@@ -30,7 +30,8 @@ export async function getCodeList(pageindex?: string, code?: string, status?: st
  * @param id id
  * @returns
  */
-export async function editCode(data, id?: number) {
+export async function editCode(data, id?: number, username = '') {
+    data.username = username;
     if (id) {
         return CodeManger.update(data, id);
     } else {

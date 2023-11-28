@@ -49,6 +49,11 @@ CodeManger.init(
             defaultValue: 0,
             comment: '紧急程度',
         },
+        username: {
+            type: DataTypes.STRING(100),
+            defaultValue: '',
+            comment: '修改人',
+        },
     },
     {
         sequelize: db,
