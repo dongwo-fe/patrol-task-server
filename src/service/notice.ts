@@ -33,7 +33,9 @@ export function getAPIErrorListMsg() {
 }
 
 // 定向排除部分错误
-function isFilterAPIError(api: string, r = '') {
+function isFilterAPIError(api: string, r = '', ip = '') {
+    // 小程序的安全检查
+    if (['106.55.202.118', '113.96.223.69', '125.39.132.125'].includes(ip)) return true;
     if (r.includes(`"data":null,`)) return true;
     if (r.includes(`"code":"200"`) && r.includes(`message":"操作成功"`)) return true;
     if (r.includes(`message":"用户认证失败，请重新登录"`)) return true;
@@ -71,7 +73,7 @@ function isFilterAPIError(api: string, r = '') {
  * @param env 环境
  */
 export async function NoticeApiError(from: string, api: string, err_type: string, r = '', ip = '', env = '--') {
-    if (isFilterAPIError(api, r)) return;
+    if (isFilterAPIError(api, r, ip)) return;
     // console.log(from, api, err_type, env);
     const url = from.split('?')[0];
 
