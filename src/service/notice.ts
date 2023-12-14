@@ -48,6 +48,9 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"您的账号已被停用，请联系运营处理"`)) return true;
     if (r.includes(`"errno":"`)) return true;
     if (r.includes(`"message":"保存成功"`)) return true;
+    if (r.includes(`"message":"手机号已存在"`)) return true;
+    if (r.includes(`"message":"免费配送范围300字以内，不支持表情"`)) return true;
+    if (r.includes(`库存数量不足，无法出库`)) return true;
     // if (r.includes(`"data":null,`)) return true;
     if (r.includes(`"code":"200"`) && r.includes(`message":"操作成功"`)) return true;
     if (r.includes(`message":"用户认证失败，请重新登录"`)) return true;
