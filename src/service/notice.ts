@@ -107,7 +107,7 @@ export async function NoticeApiError(from: string, api: string, err_type: string
     list.push({ url, from, api, err_type, env, r, t, ip });
     API_ERROR_List.set(api, list);
     API_ERROR_Cache.unshift({ url, from, api, err_type, env, r, t, ip });
-    if (API_ERROR_Cache.length > 10000) API_ERROR_Cache.length = 10000;
+    if (API_ERROR_Cache.length > 8000) API_ERROR_Cache.length = 8000;
 }
 
 // 定时通知钉钉,通知规则，按照错误数量从高到底排序
