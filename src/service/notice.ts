@@ -57,6 +57,9 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"临近预约时间，不可取消预约"`)) return true;
     if (r.includes(`"message":"可兑换积分不足!"`)) return true;
     if (r.includes(`"message":"该商品已达助力上限！"`)) return true;
+    if (r.includes(`"message":"商品请完善必填信息后再上架"`)) return true;
+    if (r.includes(`"message":"请联系管理员绑定天猫店铺或者卖场"`)) return true;
+    if (r.includes(`"message":"商品已上架，不能删除"`)) return true;
     if (r.includes(`"message":"物流单号不能为空"`)) return true;
     if (r.includes(`"message":"修改地址成功"`)) return true;
     if (r.includes(`"message":"导购不可以参与该活动"`)) return true;
