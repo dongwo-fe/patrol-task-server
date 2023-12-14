@@ -49,12 +49,18 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"您的账号不存在，请联系运营处理"`)) return true;
     if (r.includes(`"errno":`)) return true;
     if (r.includes(`"message":"保存成功"`)) return true;
+    if (r.includes(`"message":"请求成功"`)) return true;
+    if (r.includes(`"message":"结算总则中单价不能为空"`)) return true;
     if (r.includes(`"message":"手机号已存在"`)) return true;
+    if (r.includes(`"message":"验证码错误，请重新输入"`)) return true;
     if (r.includes(`"message":"可兑换积分不足!"`)) return true;
     if (r.includes(`"message":"您的密码有误，请检查后重新输入"`)) return true;
     if (r.includes(`"message":"当前用户是居然员工"`)) return true;
+    if (r.includes(`"message":"主营品牌、主营品类为必填项"`)) return true;
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"您的密码有误，再输入错误`)) return true;
+    if (r.includes(`"message":"SKU编号不能为空`)) return true;
+    if (r.includes(`"message":"商品售价需输入正数`)) return true;
     if (r.includes(`"message":"感谢您对低碳环保做出的贡献！`)) return true;
     if (r.includes(`"message":"该优惠券组合不能同时使用！"`)) return true;
     if (r.includes(`"message":"未查询到订单包信息"`)) return true;
