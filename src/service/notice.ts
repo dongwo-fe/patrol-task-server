@@ -53,6 +53,8 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"结算总则中单价不能为空"`)) return true;
     if (r.includes(`"message":"手机号已存在"`)) return true;
     if (r.includes(`"message":"验证码错误，请重新输入"`)) return true;
+    if (r.includes(`"message":"请填写合同首期出单日期"`)) return true;
+    if (r.includes(`"message":"临近预约时间，不可取消预约"`)) return true;
     if (r.includes(`"message":"可兑换积分不足!"`)) return true;
     if (r.includes(`"message":"您的密码有误，请检查后重新输入"`)) return true;
     if (r.includes(`"message":"当前用户是居然员工"`)) return true;
