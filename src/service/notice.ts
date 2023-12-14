@@ -54,7 +54,10 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"您的密码有误，请检查后重新输入"`)) return true;
     if (r.includes(`"message":"当前用户是居然员工"`)) return true;
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
+    if (r.includes(`"message":"您的密码有误，再输入错误`)) return true;
+    if (r.includes(`"message":"感谢您对低碳环保做出的贡献！`)) return true;
     if (r.includes(`"message":"该优惠券组合不能同时使用！"`)) return true;
+    if (r.includes(`"message":"未查询到订单包信息"`)) return true;
     if (r.includes(`"message":"免费配送范围300字以内，不支持表情"`)) return true;
     if (r.includes(`库存数量不足，无法出库`)) return true;
     // if (r.includes(`"data":null,`)) return true;
