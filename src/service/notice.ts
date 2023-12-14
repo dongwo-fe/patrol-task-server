@@ -46,11 +46,14 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"您还有订单未支付，请下拉刷新查看"`)) return true;
     if (r.includes(`"message":"您今日已达助力上限啦~"`)) return true;
     if (r.includes(`"message":"您的账号已被停用，请联系运营处理"`)) return true;
+    if (r.includes(`"message":"您的账号不存在，请联系运营处理"`)) return true;
     if (r.includes(`"errno":`)) return true;
     if (r.includes(`"message":"保存成功"`)) return true;
     if (r.includes(`"message":"手机号已存在"`)) return true;
+    if (r.includes(`"message":"可兑换积分不足!"`)) return true;
     if (r.includes(`"message":"您的密码有误，请检查后重新输入"`)) return true;
     if (r.includes(`"message":"当前用户是居然员工"`)) return true;
+    if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"该优惠券组合不能同时使用！"`)) return true;
     if (r.includes(`"message":"免费配送范围300字以内，不支持表情"`)) return true;
     if (r.includes(`库存数量不足，无法出库`)) return true;
