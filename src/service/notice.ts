@@ -49,6 +49,7 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"errno":"`)) return true;
     if (r.includes(`"message":"保存成功"`)) return true;
     if (r.includes(`"message":"手机号已存在"`)) return true;
+    if (r.includes(`"message":"该优惠券组合不能同时使用！"`)) return true;
     if (r.includes(`"message":"免费配送范围300字以内，不支持表情"`)) return true;
     if (r.includes(`库存数量不足，无法出库`)) return true;
     // if (r.includes(`"data":null,`)) return true;
