@@ -56,6 +56,13 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"请填写合同首期出单日期"`)) return true;
     if (r.includes(`"message":"临近预约时间，不可取消预约"`)) return true;
     if (r.includes(`"message":"可兑换积分不足!"`)) return true;
+    if (r.includes(`"message":"该商品已达助力上限！"`)) return true;
+    if (r.includes(`"message":"物流单号不能为空"`)) return true;
+    if (r.includes(`"message":"修改地址成功"`)) return true;
+    if (r.includes(`"message":"导购不可以参与该活动"`)) return true;
+    if (r.includes(`"message":"输入格式不正确"`)) return true;
+    if (r.includes(`"message":"暂不支持退款，部分优惠券已经被核销使用"`)) return true;
+    if (r.includes(`"message":"不可为自己助力哦~"`)) return true;
     if (r.includes(`"message":"您的密码有误，请检查后重新输入"`)) return true;
     if (r.includes(`"message":"当前用户是居然员工"`)) return true;
     if (r.includes(`"message":"主营品牌、主营品类为必填项"`)) return true;
