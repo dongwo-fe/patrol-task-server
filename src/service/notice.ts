@@ -36,6 +36,7 @@ export function getAPIErrorListMsg() {
 function isFilterAPIError(api: string, r = '', ip = '') {
     // 小程序的安全检查
     if (['106.55.202.118', '113.96.223.69', '125.39.132.125'].includes(ip)) return true;
+    if (r.includes(`"message":"没有推荐商品"`)) return true;
     if (r.includes(`"data":null,`)) return true;
     if (r.includes(`"code":"200"`) && r.includes(`message":"操作成功"`)) return true;
     if (r.includes(`message":"用户认证失败，请重新登录"`)) return true;
