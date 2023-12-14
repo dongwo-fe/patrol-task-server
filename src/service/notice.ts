@@ -62,6 +62,9 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"SKU编号不能为空`)) return true;
     if (r.includes(`"message":"商品售价需输入正数`)) return true;
     if (r.includes(`"message":"感谢您对低碳环保做出的贡献！`)) return true;
+    if (r.includes(`"message":"未查询到发起砍价的信息！`)) return true;
+    if (r.includes(`"message":"商品定价没有被确认，不能购买`)) return true;
+    if (r.includes(`"message":"验证不一致,手机号已实名`)) return true;
     if (r.includes(`"message":"该优惠券组合不能同时使用！"`)) return true;
     if (r.includes(`"message":"未查询到订单包信息"`)) return true;
     if (r.includes(`"message":"免费配送范围300字以内，不支持表情"`)) return true;
