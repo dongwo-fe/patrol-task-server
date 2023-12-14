@@ -37,6 +37,13 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     // 小程序的安全检查
     if (['106.55.202.118', '113.96.223.69', '125.39.132.125'].includes(ip)) return true;
     if (r.includes(`"message":"没有推荐商品"`)) return true;
+    if (r.includes(`"message":"订单已全部支付完成"`)) return true;
+    if (r.includes(`"message":"该手机号尚未注册"`)) return true;
+    if (r.includes(`"message":"请输入验证码"`)) return true;
+    if (r.includes(`"message":"无法获取当前导购信息"`)) return true;
+    if (r.includes(`"message":"未找到商户信息"`)) return true;
+    if (r.includes(`"message":"该品牌、类目、型号的商品已存在"`)) return true;
+    if (r.includes(`"message":"您还有订单未支付，请下拉刷新查看"`)) return true;
     // if (r.includes(`"data":null,`)) return true;
     if (r.includes(`"code":"200"`) && r.includes(`message":"操作成功"`)) return true;
     if (r.includes(`message":"用户认证失败，请重新登录"`)) return true;
