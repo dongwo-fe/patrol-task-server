@@ -36,6 +36,9 @@ export function getAPIErrorListMsg() {
 function isFilterAPIError(api: string, r = '', ip = '') {
     // 小程序的安全检查
     if (['106.55.202.118', '113.96.223.69', '125.39.132.125'].includes(ip)) return true;
+    // 小程序原生消息排除
+    if (r.includes(`"errno":`)) return true;
+    // 错误消息排除
     if (r.includes(`"message":"没有推荐商品"`)) return true;
     if (r.includes(`"message":"订单已全部支付完成"`)) return true;
     if (r.includes(`"message":"该手机号尚未注册"`)) return true;
@@ -47,7 +50,6 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"您今日已达助力上限啦~"`)) return true;
     if (r.includes(`"message":"您的账号已被停用，请联系运营处理"`)) return true;
     if (r.includes(`"message":"您的账号不存在，请联系运营处理"`)) return true;
-    if (r.includes(`"errno":`)) return true;
     if (r.includes(`"message":"保存成功"`)) return true;
     if (r.includes(`"message":"请求成功"`)) return true;
     if (r.includes(`"message":"结算总则中单价不能为空"`)) return true;
@@ -73,8 +75,15 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"主营品牌、主营品类为必填项"`)) return true;
     if (r.includes(`"message":"退款金额超出可退金额"`)) return true;
     if (r.includes(`"message":"对接人信息为必填项"`)) return true;
+    if (r.includes(`"message":"商品型号长度不能超过`)) return true;
     if (r.includes(`"message":"提现失败，请稍后再试"`)) return true;
+    if (r.includes(`"message":"该优惠券组合不能同时使用！"`)) return true;
+    if (r.includes(`"message":"未查询到订单包信息"`)) return true;
+    if (r.includes(`"message":"免费配送范围300字以内，不支持表情"`)) return true;
+    if (r.includes(`"message":"商品型号长度不能超过20个字"`)) return true;
+    // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
+    if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
     if (r.includes(`"message":"您的密码有误，再输入错误`)) return true;
     if (r.includes(`"message":"SKU编号不能为空`)) return true;
     if (r.includes(`"message":"商品售价需输入正数`)) return true;
@@ -84,10 +93,10 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"未查询到发起砍价的信息！`)) return true;
     if (r.includes(`"message":"商品定价没有被确认，不能购买`)) return true;
     if (r.includes(`"message":"验证不一致,手机号已实名`)) return true;
-    if (r.includes(`"message":"该优惠券组合不能同时使用！"`)) return true;
-    if (r.includes(`"message":"未查询到订单包信息"`)) return true;
-    if (r.includes(`"message":"免费配送范围300字以内，不支持表情"`)) return true;
+    //其他消息排除
     if (r.includes(`库存数量不足，无法出库`)) return true;
+    if (r.includes(`已绑定其他店铺`)) return true;
+    if (r.includes(`合同当前状态不能操作该功能,商户法人信息不全`)) return true;
     // if (r.includes(`"data":null,`)) return true;
     if (r.includes(`"code":"200"`) && r.includes(`message":"操作成功"`)) return true;
     if (r.includes(`message":"用户认证失败，请重新登录"`)) return true;
