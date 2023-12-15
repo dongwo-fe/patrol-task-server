@@ -71,11 +71,16 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"您的密码有误，请检查后重新输入"`)) return true;
     if (r.includes(`"message":"当前用户是居然员工"`)) return true;
     if (r.includes(`"message":"主营品牌、主营品类为必填项"`)) return true;
+    if (r.includes(`"message":"退款金额超出可退金额"`)) return true;
+    if (r.includes(`"message":"对接人信息为必填项"`)) return true;
+    if (r.includes(`"message":"提现失败，请稍后再试"`)) return true;
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"您的密码有误，再输入错误`)) return true;
     if (r.includes(`"message":"SKU编号不能为空`)) return true;
     if (r.includes(`"message":"商品售价需输入正数`)) return true;
+    if (r.includes(`"message":"活动期间每位用户仅可参活1次`)) return true;
     if (r.includes(`"message":"感谢您对低碳环保做出的贡献！`)) return true;
+    if (r.includes(`"message":"您的权限不足，请联系管理员`)) return true;
     if (r.includes(`"message":"未查询到发起砍价的信息！`)) return true;
     if (r.includes(`"message":"商品定价没有被确认，不能购买`)) return true;
     if (r.includes(`"message":"验证不一致,手机号已实名`)) return true;
