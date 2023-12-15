@@ -88,6 +88,17 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"商品库存为0,不可上架"`)) return true;
     if (r.includes(`"message":"赠品金额大于应返金额"`)) return true;
     if (r.includes(`"message":"您的验证码有误，请检查后重新输入"`)) return true;
+    if (r.includes(`"message":"您已超过当前最大领取次数"`)) return true;
+    if (r.includes(`"message":"没有符合领取条件的商品"`)) return true;
+    if (r.includes(`"message":"店铺已停用或者还未入驻"`)) return true;
+    if (r.includes(`"message":"该店铺为已撤店店铺，若需启用，请联系洞窝运营人员进行处理"`)) return true;
+    if (r.includes(`"message":"请填写退款金额"`)) return true;
+    if (r.includes(`"message":"证件号码有误"`)) return true;
+    if (r.includes(`"message":"请选择装修内容"`)) return true;
+    if (r.includes(`"message":"验证码输入错误"`)) return true;
+    if (r.includes(`"message":"您已经助力过该活动~"`)) return true;
+    if (r.includes(`"message":"当前证书已申请成功,无需再次申请"`)) return true;
+    if (r.includes(`"message":"暂无数据请切换条件后导出！"`)) return true;
     // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
@@ -100,12 +111,14 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"未查询到发起砍价的信息！`)) return true;
     if (r.includes(`"message":"商品定价没有被确认，不能购买`)) return true;
     if (r.includes(`"message":"验证不一致,手机号已实名`)) return true;
+    if (r.includes(`"message":"发起实名认证失败:参数错误：`)) return true;
     //其他消息排除
     if (r.includes(`当前卖场已存在该赠品编码`)) return true;
     if (r.includes(`所选品牌绑定的ERP品牌编码与ERP合同中品牌编`)) return true;
     if (r.includes(`库存数量不足，无法出库`)) return true;
     if (r.includes(`已绑定其他店铺`)) return true;
     if (r.includes(`合同当前状态不能操作该功能,商户法人信息不全`)) return true;
+    if (r.includes(`尚未到合同有效日期开始日期，不能启动!`)) return true;
     // if (r.includes(`"data":null,`)) return true;
     if (r.includes(`"code":"200"`) && r.includes(`message":"操作成功"`)) return true;
     if (r.includes(`message":"用户认证失败，请重新登录"`)) return true;
