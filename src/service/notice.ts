@@ -81,6 +81,10 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"未查询到订单包信息"`)) return true;
     if (r.includes(`"message":"免费配送范围300字以内，不支持表情"`)) return true;
     if (r.includes(`"message":"商品型号长度不能超过20个字"`)) return true;
+    if (r.includes(`"message":"核销成功"`)) return true;
+    if (r.includes(`"message":"您的账号无业务系统权限，请联系运营处理"`)) return true;
+    if (r.includes(`"message":"密码错误"`)) return true;
+    if (r.includes(`"message":"导出的数据为空，请至少选择一条导出数据"`)) return true;
     // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
@@ -94,6 +98,8 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"商品定价没有被确认，不能购买`)) return true;
     if (r.includes(`"message":"验证不一致,手机号已实名`)) return true;
     //其他消息排除
+    if (r.includes(`当前卖场已存在该赠品编码`)) return true;
+    if (r.includes(`所选品牌绑定的ERP品牌编码与ERP合同中品牌编`)) return true;
     if (r.includes(`库存数量不足，无法出库`)) return true;
     if (r.includes(`已绑定其他店铺`)) return true;
     if (r.includes(`合同当前状态不能操作该功能,商户法人信息不全`)) return true;
