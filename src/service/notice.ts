@@ -85,6 +85,9 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"您的账号无业务系统权限，请联系运营处理"`)) return true;
     if (r.includes(`"message":"密码错误"`)) return true;
     if (r.includes(`"message":"导出的数据为空，请至少选择一条导出数据"`)) return true;
+    if (r.includes(`"message":"商品库存为0,不可上架"`)) return true;
+    if (r.includes(`"message":"赠品金额大于应返金额"`)) return true;
+    if (r.includes(`"message":"您的验证码有误，请检查后重新输入"`)) return true;
     // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
