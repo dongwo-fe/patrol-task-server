@@ -109,6 +109,11 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"导购不可以发起和助力该活动~"`)) return true;
     if (r.includes(`"message":"请先完善商户必填信息。"`)) return true;
     if (r.includes(`"message":"法人身份证号重复"`)) return true;
+    if (r.includes(`"message":"首期记账区间结束日期必须为月末，请修改！"`)) return true;
+    if (r.includes(`"message":"下单商品种类超限"`)) return true;
+    if (r.includes(`"message":"卡号或密码错误"`)) return true;
+    if (r.includes(`"message":"原认证已过期，请重新登录"`)) return true;
+    if (r.includes(`"message":"该用户可退余额不足！"`)) return true;
     // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
