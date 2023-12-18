@@ -104,6 +104,9 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"该账号已停用"`)) return true;
     if (r.includes(`"message":"该合同已被绑定，请解绑后再执行此操作"`)) return true;
     if (r.includes(`"message":"活动已经结束啦~"`)) return true;
+    if (r.includes(`"message":"请输入主营品类"`)) return true;
+    if (r.includes(`"message":"仅可同时预约2个时段，请您完成健身或取消后继续预约~"`)) return true;
+    if (r.includes(`"message":"导购不可以发起和助力该活动~"`)) return true;
     // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
@@ -126,7 +129,7 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`尚未到合同有效日期开始日期，不能启动!`)) return true;
     if (r.includes(`暂时无法下单，请联系商家解决处理`)) return true;
     if (r.includes(`"access_token":"`)) return true;
-    if (r.includes(`"user_status":"`)) return true;
+    if (r.includes(`"user_status":{`)) return true;
     if (r.includes(`"token":"`)) return true;
     // 其他
     // if (r.includes(`"data":null,`)) return true;
