@@ -107,6 +107,8 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"请输入主营品类"`)) return true;
     if (r.includes(`"message":"仅可同时预约2个时段，请您完成健身或取消后继续预约~"`)) return true;
     if (r.includes(`"message":"导购不可以发起和助力该活动~"`)) return true;
+    if (r.includes(`"message":"请先完善商户必填信息。"`)) return true;
+    if (r.includes(`"message":"法人身份证号重复"`)) return true;
     // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
@@ -120,6 +122,7 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"商品定价没有被确认，不能购买`)) return true;
     if (r.includes(`"message":"验证不一致,手机号已实名`)) return true;
     if (r.includes(`"message":"发起实名认证失败:参数错误：`)) return true;
+    if (r.includes(`"message":"该商品与店铺内其他商品存在`)) return true;
     //其他消息排除
     if (r.includes(`当前卖场已存在该赠品编码`)) return true;
     if (r.includes(`所选品牌绑定的ERP品牌编码与ERP合同中品牌编`)) return true;
