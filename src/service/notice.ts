@@ -139,6 +139,8 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"该商品与店铺内其他商品存在`)) return true;
     if (r.includes(`"message":"固定租金优惠期时间段有重叠`)) return true;
     if (r.includes(`"message":"验证不一致:`)) return true;
+    if (r.includes(`"message":"此店铺编码ERP未推送`)) return true;
+    if (r.includes(`"message":"您的账号已被停用，`)) return true;
     //其他消息排除
     if (r.includes(`当前卖场已存在该赠品编码`)) return true;
     if (r.includes(`所选品牌绑定的ERP品牌编码与ERP合同中品牌编`)) return true;
