@@ -114,6 +114,15 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"卡号或密码错误"`)) return true;
     if (r.includes(`"message":"原认证已过期，请重新登录"`)) return true;
     if (r.includes(`"message":"该用户可退余额不足！"`)) return true;
+    if (r.includes(`"message":"没有符合领取条件的类目"`)) return true;
+    if (r.includes(`"message":"没有符合领取条件的品牌"`)) return true;
+    if (r.includes(`"message":"原认证已过期，请重新登录"`)) return true;
+    if (r.includes(`"message":"统一社会信用代码重复"`)) return true;
+    if (r.includes(`"message":"退款已确认，请到POS机进行退款操作"`)) return true;
+    if (r.includes(`"message":"请选择卖场或店铺或输入sku编号后再次查询！"`)) return true;
+    if (r.includes(`"message":"没有符合条件的租赁政策，租金标准必须大于0，请重新维护"`)) return true;
+    if (r.includes(`"message":"每人仅可参与1次的到店礼才可参与分销"`)) return true;
+    if (r.includes(`"message":"请联系顾客支付会员费用"`)) return true;
     // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
@@ -128,6 +137,8 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"验证不一致,手机号已实名`)) return true;
     if (r.includes(`"message":"发起实名认证失败:参数错误：`)) return true;
     if (r.includes(`"message":"该商品与店铺内其他商品存在`)) return true;
+    if (r.includes(`"message":"固定租金优惠期时间段有重叠`)) return true;
+    if (r.includes(`"message":"验证不一致:`)) return true;
     //其他消息排除
     if (r.includes(`当前卖场已存在该赠品编码`)) return true;
     if (r.includes(`所选品牌绑定的ERP品牌编码与ERP合同中品牌编`)) return true;
