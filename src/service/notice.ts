@@ -125,6 +125,7 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"请联系顾客支付会员费用"`)) return true;
     if (r.includes(`"message":"请输入主营品牌"`)) return true;
     if (r.includes(`"message":"当前操作人既不是管理员，也不是法人，无权操作"`)) return true;
+    if (r.includes(`"message":"服务费规则不能为空"`)) return true;
     // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
