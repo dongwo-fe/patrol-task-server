@@ -156,6 +156,7 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`合同当前状态不能操作该功能,商户法人信息不全`)) return true;
     if (r.includes(`尚未到合同有效日期开始日期，不能启动!`)) return true;
     if (r.includes(`暂时无法下单，请联系商家解决处理`)) return true;
+    if (r.includes(`商铺已被停用,请重新选择商品`)) return true;
     if (r.includes(`"access_token":"`)) return true;
     if (r.includes(`"user_status":{`)) return true;
     if (r.includes(`"token":"`)) return true;

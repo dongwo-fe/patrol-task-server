@@ -1,140 +1,28 @@
-const Koa = require('koa');
-const fs = require('fs');
-const path = require('path');
-const artTemplate = require('art-template');
+// const dns = require('dns');
 
-const RootPath = process.cwd();
-const TempNginxPath = path.join(RootPath, `./template/api_error.html`);
+// dns.lookup('github.com', (err, address, family) => {
+//     console.log('address: %j family: IPv%s', address, family);
+// });
 
-const app = new Koa();
-const API_ERROR_Cache = [
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-    {
-        from: 'https://servicewechat.com/wx7406f385730d3789/0/page-frame.html',
-        api: 'https://gatewaydev4***/easyhome-app-application/mini/order/addOrderByBuyer?requestTime=1700555149633&dwSign=34D527E41619D59098CBF241314DE72C',
-        err_type: '0',
-        r: '{"code":"500","message":"服务开小差了，请稍候重试！","data":null,"success":false}',
-        t: '2023-11-21 16:25:50',
-        env: '--',
-    },
-];
-app.use(function (ctx) {
-    const TempStr = fs.readFileSync(TempNginxPath, { encoding: 'utf-8' });
-    ctx.body = artTemplate.render(TempStr, { texts: API_ERROR_Cache });
+const { Resolver } = require('dns');
+const resolver = new Resolver();
+// resolver.setServers(['8.8.8.8']);
+// resolver.setServers(['114.114.114.114']);
+resolver.setServers(['202.106.0.20']);
+
+// This request will use the server at 4.4.4.4, independent of global settings.
+resolver.resolve4('github.global.ssl.fastly.net', (err, addresses) => {
+    console.log(err, addresses);
 });
-const port = process.env.PORT || '8082';
-
-app.listen(port, function () {
-    console.log(`服务器运行在http://127.0.0.1:${port}`);
+resolver.resolve4('assets-cdn.github.com', (err, addresses) => {
+    console.log(err, addresses);
 });
+resolver.resolve4('github.com', (err, addresses) => {
+    console.log(err, addresses);
+});
+
+// Mac用户
+// sudo killall -HUP mDNSResponder
+
+// Win
+// ipconfig /flushdns
