@@ -130,6 +130,8 @@ function isFilterAPIError(api: string, r = '', ip = '') {
     if (r.includes(`"message":"首期记账区间开始日期必须在合同有效期范围之内"`)) return true;
     if (r.includes(`"message":"姓名不能为空"`)) return true;
     if (r.includes(`"message":"订单已取消或支付超时，不能支付"`)) return true;
+    if (r.includes(`"message":"结束日期不可为空"`)) return true;
+    if (r.includes(`"message":"暂无操作权限"`)) return true;
     // 长消息排除
     if (r.includes(`"message":"该店铺为已撤店状态，若需`)) return true;
     if (r.includes(`"message":"工单不是待取件状态/入库状态`)) return true;
