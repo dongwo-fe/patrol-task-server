@@ -250,7 +250,7 @@ function getAPIListMsg(list: APIERRITEM[]) {
     });
 
     const result = Array.from(objs.values());
-    const msgs: string[] = [`- 【${api}】,\`${list.length}次/${APINoticeOnce}分钟\``];
+    const msgs: string[] = [`- 【${api}】,\`${list.length}次/${APINoticeOnce}小时\``];
 
     result.sort((a, b) => b.length - a.length);
 
